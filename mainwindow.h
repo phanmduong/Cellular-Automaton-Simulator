@@ -14,6 +14,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public slots:
+        void render();
+
+private slots:
+        void on_pushButton_4_clicked();
 
 private:
     Ui::MainWindow *ui;
