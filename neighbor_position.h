@@ -1,15 +1,25 @@
 #ifndef NEIGHBOR_H
 #define NEIGHBOR_H
 
+/* Written by DuongHV */
 
 class NeighborPosition
 {
     int x, y;
 public:
+    // Constructor
     NeighborPosition(int x, int y);
 
-    int getX() const; //a.V-Duong
-    int getY() const; //a.V-Duong
+    // Destructor
+    ~NeighborPosition();
+
+    // Getters
+    int getX() const;
+    int getY() const;
+
+    // Setters
+    void setX(int x);
+    void setY(int y);
 };
 
 #endif // NEIGHBOR_H
