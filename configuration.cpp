@@ -2,62 +2,62 @@
 
 int Configuration::getNumberOfState() const
 {
-    return numberOfState;
+    return this->numberOfState;
 }
 
-void Configuration::setNumberOfState(int value)
+void Configuration::setNumberOfState(int nbState)
 {
-    numberOfState = value;
+    this->numberOfState = nbState;
 }
 
 int Configuration::getWidth() const
 {
-    return width;
+    return this->width;
 }
 
 void Configuration::setWidth(int value)
 {
-    width = value;
+    this->width = value;
 }
 
 int Configuration::getHeight() const
 {
-    return height;
+    return this->height;
 }
 
 void Configuration::setHeight(int value)
 {
-    height = value;
+   this->height = value;
 }
 
 string Configuration::getNeightborPostionText() const
 {
-    return neightborPostionText;
+    return this->neightborPostionText;
 }
 
 void Configuration::setNeightborPostionText(const string &value)
 {
-    neightborPostionText = value;
+    this->neightborPostionText = value;
 }
 
 string Configuration::getRuleName() const
 {
-    return ruleName;
+    return this->ruleName;
 }
 
 void Configuration::setRuleName(const string &value)
 {
-    ruleName = value;
+    this->ruleName = value;
 }
 
 int Configuration::getLimitGeneration() const
 {
-    return limitGeneration;
+    return this->limitGeneration;
 }
 
 void Configuration::setLimitGeneration(int value)
 {
-    limitGeneration = value;
+    this->limitGeneration = value;
 }
 
 Configuration::Configuration()
