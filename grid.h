@@ -13,10 +13,10 @@ class Grid
     vector<NeighborPosition*> neighborPositions;
     Rule const *rule;
 
-    // Get list neighbors of given cell
+    // Get list neighbor cells of given cell
     vector<Cell*> getNeighbors(Cell const *cell);
 
-    // Create list cells don't have state
+    /* Initialize all cells of grid without state value */
     void createGridCells();
 
 public:
@@ -29,6 +29,7 @@ public:
     // Get specific cell with given coordinates
     Cell* getCell(int x, int y);
 
+    // Generate all new state of each cell in grid at each generation and update for all cells
     void generation();
 };
 
