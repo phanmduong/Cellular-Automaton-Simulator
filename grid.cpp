@@ -14,12 +14,11 @@ Grid::~Grid()
 
 }
 
-Cell Grid::getCell(int x, int y)
+Cell* Grid::getCell(int x, int y)
 {
-    for (unsigned int i=0; i<this->cells.size(); ++i)
-    {
-        Cell* cell = this->cells[i];
-        if(true) // check x==cell->x and y == cell->y
-            return *cell;
-    }
+    if(x<0 || x >= this->width) return nullptr;
+    if(y<0 || y >= this->height) return nullptr;
+
+    //else
+    return this->cells[y*this->width+x];
 }

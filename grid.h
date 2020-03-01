@@ -24,7 +24,7 @@ public:
     ~Grid();
 
     // Get specific cell with given coordinates
-    Cell getCell(int x, int y);
+    Cell* getCell(int x, int y);
 
     void generation();
 };
