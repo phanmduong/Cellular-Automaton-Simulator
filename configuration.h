@@ -10,7 +10,7 @@ class Configuration
     int numberOfState;
     int width;
     int height;
-    string neightborPostionText;
+    string neighborPostionText;
     string ruleName;
     int limitGeneration;
 
@@ -31,9 +31,6 @@ public:
     int getHeight() const; //a.ban
     void setHeight(int value); //a.ban
 
-    string getNeightborPostionText() const; //a.ban
-    void setNeightborPostionText(const string &value); //a.ban
-
     string getRuleName() const; //a.ban
     void setRuleName(const string &value); //a.ban
 
@@ -43,6 +40,9 @@ public:
     string getFileRulePath() const;
     string getFileInputValuePath() const;
     string getDirectoryOutputValuePath() const;
+
+    string getNeighborPostionText() const;
+    void setNeighborPostionText(const string &value);
 };
 
 #endif // CONFIGURATION_H

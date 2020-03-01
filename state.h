@@ -17,14 +17,8 @@ public:
     ~State();
 
     // getters
-    string getName() const; // Kieu
-    string getColor() const; //Kieu
-
-    // setters
-    void setName(const string &name);
-    void setColor(const string &color);
-
-
+    string getName() const;
+    string getColor() const;
 };
 
 #endif // STATE_H

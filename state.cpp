@@ -25,16 +25,3 @@ string State::getColor() const
     return color;
 }
 
-
-// setters
-void State::setName(const string &name)
-{
-    this->name = name;
-}
-
-void State::setColor(const string &color)
-{
-    this->color = color;
-}
-
-
