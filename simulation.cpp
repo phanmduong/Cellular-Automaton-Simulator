@@ -4,3 +4,8 @@ Simulation::Simulation()
 {
 
 }
+
+string Simulation::readInitValueGrid(const string path)
+{
+
+}

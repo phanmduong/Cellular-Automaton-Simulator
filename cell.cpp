@@ -1,10 +1,5 @@
 #include "cell.h"
 
-Cell::Cell()
-{
-
-}
-
 int Cell::getX() const
 {
     return x;
@@ -13,6 +8,11 @@ int Cell::getX() const
 int Cell::getY() const
 {
     return y;
+}
+
+Cell::Cell(int x, int y, State state)
+{
+
 }
 
 State Cell::getState() const

@@ -21,11 +21,3 @@ int NeighborPosition::getY() const
 {
    return this->y;
 }
-void NeighborPosition::setX(int x)
-{
-   this->x = x;
-}
-void NeighborPosition::setY(int y)
-{ 
-   this->y = y;
-}

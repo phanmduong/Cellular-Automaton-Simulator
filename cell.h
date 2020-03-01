@@ -8,11 +8,11 @@ class Cell
     State state;
 
 public:
-    Cell(int x, int y, State state);
-    Cell(int x, int y);
+    Cell(int x, int y, State state); //kieu
+    Cell(int x, int y); //Kieu
 
-    State getState() const; //kieu
-    void setState(const State &value); //Kieu
+    State getState() const;
+    void setState(const State &value);
     int getX() const;
     int getY() const;
 };

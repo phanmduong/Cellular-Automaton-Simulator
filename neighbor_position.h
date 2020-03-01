@@ -16,10 +16,6 @@ public:
     // Getters
     int getX() const;
     int getY() const;
-
-    // Setters
-    void setX(int x);
-    void setY(int y);
 };
 
 #endif // NEIGHBOR_H
