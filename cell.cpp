@@ -1,8 +1,15 @@
 #include "cell.h"
 
-Cell::Cell()
+Cell::Cell(int x, int y)
 {
+    this->x = x;
+    this->y = y;
+}
 
+Cell::Cell(int x, int y, State state){
+    this->x = x;
+    this->y = y;
+    this->state = state;
 }
 
 State Cell::getState() const

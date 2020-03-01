@@ -12,6 +12,9 @@ public:
     State(string name, string color);
     State(string name);
 
+    void setName(const string &value);
+    void setColor(const string &color);
+
     string getName() const; // Kieu
     string getColor() const; //Kieu
 };
