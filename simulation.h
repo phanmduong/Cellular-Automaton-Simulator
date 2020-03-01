@@ -3,20 +3,30 @@
 #include <configuration.h>
 #include <grid.h>
 #include <rule.h>
+#include <neighbor_position.h>
+#include <vector>
 
 class Simulation
 {
-    Configuration config;
-    Grid grid;
+    Configuration *config;
+    Grid *grid;
     vector<Rule*> rules;
-    string fileRulePath;
+    vector<State*> states;
 
-    string readInitValueGrid(string const path);
+    vector<State*> createStates(int numberOfState);
+
+    Rule* getRuleWithRuleName(string ruleName);
+
+    vector<NeighborPosition*> getNeighborPostions(string neightborPostionText);
+
+    void readInitValueGrid(string const path);
     void writeValueGrid(string const path);
-    void getRulesFromFile();
+    void getRulesFromFile(string path);
 
 public:
-    Simulation(Configuration config, string fileRulePath); // Kieu
+    Simulation(Configuration *config);
+
+    ~Simulation();
 
     void run();
 };

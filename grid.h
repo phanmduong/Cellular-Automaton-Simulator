@@ -16,6 +16,9 @@ class Grid
     // Get list neighbors of given cell
     vector<Cell*> getNeighbors(Cell const *cell);
 
+    // Create list cells don't have state
+    void createGridCells();
+
 public:
     // Constructor
     Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule const *rule);
