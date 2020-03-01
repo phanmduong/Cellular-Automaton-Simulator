@@ -9,14 +9,16 @@ class State
     string name;
     string color;
 public:
+    // constructors
     State(string name, string color);
     State(string name);
 
-    void setName(const string &value);
-    void setColor(const string &color);
+    // destructor
+    ~State();
 
-    string getName() const; // Kieu
-    string getColor() const; //Kieu
+    // getters
+    string getName() const;
+    string getColor() const;
 };
 
 #endif // STATE_H

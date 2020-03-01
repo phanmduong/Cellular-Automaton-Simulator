@@ -8,6 +8,7 @@ class Cell
     const State *state;
 
 public:
+
     Cell(int x, int y, State const *state); //kieu
     Cell(int x, int y); //Kieu
 

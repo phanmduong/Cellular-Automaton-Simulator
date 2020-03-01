@@ -9,6 +9,8 @@ void Cell::setState(const State *value)
     state = value;
 }
 
+
+// constructors
 Cell::Cell(int x, int y)
 {
     this->x = x;
@@ -22,6 +24,9 @@ Cell::Cell(int x, int y, const State* state){
     this->state = state;
 }
 
+// destructor
+Cell::~Cell() {}
+
 int Cell::getX() const
 {
     return x;
@@ -29,5 +34,6 @@ int Cell::getX() const
 
 int Cell::getY() const
 {
+
     return y;
 }

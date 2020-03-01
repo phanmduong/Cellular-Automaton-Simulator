@@ -37,19 +37,6 @@ void Configuration::setHeight(int value)
    this->height = value;
 }
 
-//get neighbors
-string Configuration::getNeightborPostionText() const
-{
-    return this->neightborPostionText;
-}
-
-//set neighbor
-void Configuration::setNeightborPostionText(const string &value)
-{
-    this->neightborPostionText = value;
-}
-
-//get rule
 string Configuration::getRuleName() const
 {
     return this->ruleName;
@@ -86,6 +73,16 @@ string Configuration::getFileInputValuePath() const
 string Configuration::getDirectoryOutputValuePath() const
 {
     return directoryOutputValuePath;
+}
+
+string Configuration::getNeighborPostionText() const
+{
+    return neighborPostionText;
+}
+
+void Configuration::setNeighborPostionText(const string &value)
+{
+    neighborPostionText = value;
 }
 
 Configuration::Configuration()
