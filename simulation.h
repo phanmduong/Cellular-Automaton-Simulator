@@ -1,5 +1,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
+#include <dlfcn.h>
 #include <configuration.h>
 #include <grid.h>
 #include <rule.h>
@@ -12,7 +13,7 @@ class Simulation
     Grid *grid;
     vector<Rule *> rules;
     vector<State *> states;
- d
+
     vector<State *> createStates(int numberOfState);
 
     Rule* getRuleWithRuleName(string ruleName);

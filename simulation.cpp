@@ -13,6 +13,11 @@ vector<State *> Simulation::getStates() const
 Rule *Simulation::getRuleWithRuleName(string ruleName)
 {
     //TODO: get rule from list rule with rule name (m.duong)
+    for(int i = 0; i < this->rules.size(); ++i){
+        if (this->rules[i]->getName() == ruleName){
+            return this->rules[i];
+        }
+    }
 }
 
 vector<NeighborPosition *> Simulation::getNeighborPostions(string neightborPostionText)
@@ -39,6 +44,15 @@ void Simulation::writeValueGrid(const string path)
 void Simulation::getRulesFromFile(string path)
 {
     //TODO: get list rule in file .so (m.duong)
+    void* handle = dlopen("./rule.so", RTLD_LAZY);
+    typedef void (*rule_t)();
+    typedef vector<Rule*> (*rule_t2)();
+    dlerror();
+    rule_t initRules = (rule_t) dlsym(handle, "initRules");
+    initRules();
+    rule_t2 getAllRules = (rule_t2) dlsym(handle, "getAllRules");
+    this->rules = getAllRules();
+    dlclose(handle);
 }
 
 Simulation::Simulation(Configuration *config)
