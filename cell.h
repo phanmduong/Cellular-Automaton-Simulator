@@ -13,6 +13,8 @@ public:
 
     State getState() const; //kieu
     void setState(const State &value); //Kieu
+    int getX() const;
+    int getY() const;
 };
 
 #endif // CELL_H

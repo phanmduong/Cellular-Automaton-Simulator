@@ -5,16 +5,6 @@ string State::getName() const
     return name;
 }
 
-void State::setName(const string &value)
-{
-    name = value;
-}
-
-string State::getName() const
-{
-    return name;
-}
-
 string State::getColor() const
 {
     return color;
