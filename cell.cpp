@@ -15,11 +15,12 @@ Cell::Cell(int x, int y)
     this->y = y;
 }
 
+
 Cell::Cell(int x, int y, const State* state){
     this->x = x;
     this->y = y;
     this->state = state;
-
+}
 
 int Cell::getX() const
 {
