@@ -1,4 +1,23 @@
 #include "cell.h"
+const State *Cell::getState() const
+{
+    return state;
+}
+
+void Cell::setState(const State *value)
+{
+    state = value;
+}
+
+Cell::Cell(int x, int y, const State *state)
+{
+    //TODO: init value; (t.kieu)
+}
+
+Cell::Cell(int x, int y)
+{
+    //TODO: init value; (t.kieu)
+}
 
 int Cell::getX() const
 {
@@ -8,19 +27,4 @@ int Cell::getX() const
 int Cell::getY() const
 {
     return y;
-}
-
-Cell::Cell(int x, int y, State state)
-{
-
-}
-
-State Cell::getState() const
-{
-    return state;
-}
-
-void Cell::setState(const State &value)
-{
-    state = value;
 }

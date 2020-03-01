@@ -10,7 +10,6 @@ NeighborPosition::NeighborPosition(int x, int y)
 
 NeighborPosition::~NeighborPosition()
 {
-
 }
 
 int NeighborPosition::getX() const

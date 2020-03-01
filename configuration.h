@@ -1,6 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 #include <string>
+#include <neighbor_position.h>
 
 using namespace std;
 
@@ -12,6 +13,10 @@ class Configuration
     string neightborPostionText;
     string ruleName;
     int limitGeneration;
+
+    string fileRulePath = "./rule/rule.so";
+    string fileInputValuePath = "./input.txt";
+    string directoryOutputValuePath = "./output";
 
 public:
     Configuration();
@@ -34,6 +39,10 @@ public:
 
     int getLimitGeneration() const; //a.ban
     void setLimitGeneration(int value); //a.ban
+
+    string getFileRulePath() const;
+    string getFileInputValuePath() const;
+    string getDirectoryOutputValuePath() const;
 };
 
 #endif // CONFIGURATION_H

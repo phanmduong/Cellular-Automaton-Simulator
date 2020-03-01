@@ -60,7 +60,27 @@ void Configuration::setLimitGeneration(int value)
     this->limitGeneration = value;
 }
 
+string Configuration::getFileRulePath() const
+{
+    return fileRulePath;
+}
+
+string Configuration::getFileInputValuePath() const
+{
+    return fileInputValuePath;
+}
+
+string Configuration::getDirectoryOutputValuePath() const
+{
+    return directoryOutputValuePath;
+}
+
 Configuration::Configuration()
+{
+
+}
+
+Configuration::~Configuration()
 {
 
 }
