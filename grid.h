@@ -11,18 +11,22 @@ class Grid
     int height;
     vector<Cell*> cells;
     vector<NeighborPosition*> neighborPositions;
-    Rule *rule;
+    Rule const *rule;
 
+    // Get list neighbors of given cell
     vector<Cell*> getNeighbors(Cell const *cell);
 
 public:
-    Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule const *Rule); // a.V-Duong
+    // Constructor
+    Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule const *rule);
 
-    Cell getCell(int x, int y); //a.V-Duong
+    // Destructor
+    ~Grid();
+
+    // Get specific cell with given coordinates
+    Cell getCell(int x, int y);
 
     void generation();
-
-
 };
 
 #endif // GRID_H
