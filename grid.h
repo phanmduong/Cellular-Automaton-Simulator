@@ -2,7 +2,7 @@
 #define GRID_H
 #include <cell.h>
 #include <rule.h>
-#include <neightbor_position.h>
+#include <neighbor_position.h>
 #include <vector>
 
 class Grid
@@ -10,19 +10,26 @@ class Grid
     int width;
     int height;
     vector<Cell*> cells;
-    vector<NeightborPosition*> neigtborPositions;
-    Rule *rule;
+    vector<NeighborPosition*> neighborPositions;
+    Rule const *rule;
 
+    // Get list neighbors of given cell
     vector<Cell*> getNeighbors(Cell const *cell);
 
-public:
-    Grid(int width,int height, vector<NeightborPosition*> neigtborPositions, Rule const *Rule); // a.V-Duong
+    // Create list cells don't have state
+    void createGridCells();
 
-    Cell getCell(int x, int y); //a.V-Duong
+public:
+    // Constructor
+    Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule const *rule);
+
+    // Destructor
+    ~Grid();
+
+    // Get specific cell with given coordinates
+    Cell* getCell(int x, int y);
 
     void generation();
-
-
 };
 
 #endif // GRID_H

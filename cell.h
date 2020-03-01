@@ -5,19 +5,18 @@
 class Cell
 {
     int x,y;
-    State state;
+    const State *state;
 
 public:
-    // constructors
-    Cell(int x, int y, State state);
-    Cell(int x, int y);
 
-    // destructors
-    ~Cell();
+    Cell(int x, int y, State const *state); //kieu
+    Cell(int x, int y); //Kieu
 
+    int getX() const;
+    int getY() const;
 
-    State getState() const; //kieu
-    void setState(const State &value); //Kieu
+    const State *getState() const;
+    void setState(const State *value);
 };
 
 #endif // CELL_H

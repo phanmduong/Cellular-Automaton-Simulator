@@ -21,7 +21,7 @@ SOURCES += \
     grid.cpp \
     main.cpp \
     mainwindow.cpp \
-    neightbor_position.cpp \
+    neighbor_position.cpp \
     simulation.cpp \
     state.cpp
 
@@ -30,7 +30,7 @@ HEADERS += \
     configuration.h \
     grid.h \
     mainwindow.h \
-    neightbor_position.h \
+    neighbor_position.h \
     rule.h \
     simulation.h \
     state.h

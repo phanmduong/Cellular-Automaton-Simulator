@@ -1,4 +1,13 @@
 #include "cell.h"
+const State *Cell::getState() const
+{
+    return state;
+}
+
+void Cell::setState(const State *value)
+{
+    state = value;
+}
 
 
 // constructors
@@ -8,7 +17,8 @@ Cell::Cell(int x, int y)
     this->y = y;
 }
 
-Cell::Cell(int x, int y, State state){
+
+Cell::Cell(int x, int y, const State* state){
     this->x = x;
     this->y = y;
     this->state = state;
@@ -17,12 +27,13 @@ Cell::Cell(int x, int y, State state){
 // destructor
 Cell::~Cell() {}
 
-State Cell::getState() const
+int Cell::getX() const
 {
-    return state;
+    return x;
 }
 
-void Cell::setState(const State &value)
+int Cell::getY() const
 {
-    this->state = value;
+
+    return y;
 }
