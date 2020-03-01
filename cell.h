@@ -8,8 +8,13 @@ class Cell
     State state;
 
 public:
+    // constructors
     Cell(int x, int y, State state);
     Cell(int x, int y);
+
+    // destructors
+    ~Cell();
+
 
     State getState() const; //kieu
     void setState(const State &value); //Kieu

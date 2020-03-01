@@ -1,5 +1,7 @@
 #include "cell.h"
 
+
+// constructors
 Cell::Cell(int x, int y)
 {
     this->x = x;
@@ -12,6 +14,9 @@ Cell::Cell(int x, int y, State state){
     this->state = state;
 }
 
+// destructor
+Cell::~Cell() {}
+
 State Cell::getState() const
 {
     return state;
@@ -19,5 +24,5 @@ State Cell::getState() const
 
 void Cell::setState(const State &value)
 {
-    state = value;
+    this->state = value;
 }
