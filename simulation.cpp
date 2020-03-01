@@ -27,7 +27,7 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neightborPosti
     //TODO: get NeighborPosition from neightborPostionText (t.kieu)
 }
 
-//BanTQ
+//BanTQ - 3/1/2020 - read the initialized values for the simulator from the configuration
 void Simulation::readInitValueGrid(const string path)
 {
     unsigned m_width;
@@ -57,10 +57,11 @@ void Simulation::readInitValueGrid(const string path)
     //this->grid->getCell(x, y)->setState(state);
 }
 
+//BanTQ - 3/1/2020 - Write the result to a output file
 void Simulation::writeValueGrid(const string path)
 {
-    //TODO: write state of cell to file - BanTQ
-    
+    //TODO: write state of cell to file
+    //open file
     std::ofstream ofs(path);
     int A[this->config->getWidth()][config->getHeight()];
 
