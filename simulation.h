@@ -10,10 +10,10 @@ class Simulation
 {
     Configuration *config;
     Grid *grid;
-    vector<Rule*> rules;
-    vector<State*> states;
-
-    vector<State*> createStates(int numberOfState);
+    vector<Rule *> rules;
+    vector<State *> states;
+ d
+    vector<State *> createStates(int numberOfState);
 
     Rule* getRuleWithRuleName(string ruleName);
 
@@ -29,6 +29,9 @@ public:
     ~Simulation();
 
     void run();
+
+    vector<Rule *> getRules() const;
+    vector<State *> getStates() const;
 };
 
 #endif // SIMULATION_H

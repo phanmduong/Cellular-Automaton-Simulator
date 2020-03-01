@@ -1,5 +1,15 @@
 #include "simulation.h"
 
+vector<Rule *> Simulation::getRules() const
+{
+    return rules;
+}
+
+vector<State *> Simulation::getStates() const
+{
+    return states;
+}
+
 Rule *Simulation::getRuleWithRuleName(string ruleName)
 {
     //TODO: get rule from list rule with rule name (m.duong)

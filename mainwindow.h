@@ -12,11 +12,27 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    Si
+    Simulation *simulation;
+    Configuration *config;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void on_heightEdit_textChanged(const QString &arg1);
+
+    void on_widthEdit_textChanged(const QString &arg1);
+
+    void on_numberOfStateEdit_textChanged(const QString &arg1);
+
+    void on_limitGenerationEdit_textChanged(const QString &arg1);
+
+    void on_neighborsEdit_textChanged();
+
+    void on_rulesComboBox_currentIndexChanged(const QString &arg1);
+
+    void on_launchButton_clicked();
 
 private:
     Ui::MainWindow *ui;
