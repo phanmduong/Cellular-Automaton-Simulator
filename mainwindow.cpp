@@ -62,6 +62,9 @@ void MainWindow::on_launchButton_clicked()
 void MainWindow::on_chooseFileRule_clicked()
 {
     QString file_name = QFileDialog::getOpenFileName(this,"Choose file rule");
+
+    this->ui->ruleFilePathEdit->setText(file_name);
+
     this->config->setFileRulePath(file_name.toStdString());
     this->simulation->getRulesFromFile(this->config->getFileRulePath());
 
