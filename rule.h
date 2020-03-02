@@ -18,7 +18,7 @@ public:
         return name;
     }
 
-    virtual State excuteRule(const Cell *cell, Cell neighbors[]) = 0;
+    virtual State excuteRule(const Cell *cell, vector<Cell*> neighbors) = 0;
 };
 
 #endif // RULE_H

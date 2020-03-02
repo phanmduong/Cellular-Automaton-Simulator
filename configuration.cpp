@@ -60,29 +60,31 @@ void Configuration::setLimitGeneration(int value)
     this->limitGeneration = value;
 }
 
+//get the path of file rue
 string Configuration::getFileRulePath() const
 {
-    return fileRulePath;
+    return this->fileRulePath;
 }
-
+//get the path of input file
 string Configuration::getFileInputValuePath() const
 {
-    return fileInputValuePath;
+    return this->fileInputValuePath;
 }
-
+//get the path of output file directory
 string Configuration::getDirectoryOutputValuePath() const
 {
-    return directoryOutputValuePath;
+    return this->directoryOutputValuePath;
 }
-
+//get the neighboring position text
 string Configuration::getNeighborPostionText() const
 {
-    return neighborPostionText;
+    return this->neighborPostionText;
 }
 
+//set value for neighbor position text
 void Configuration::setNeighborPostionText(const string &value)
 {
-    neighborPostionText = value;
+    this->neighborPostionText = value;
 }
 
 Configuration::Configuration()

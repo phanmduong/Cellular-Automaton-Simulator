@@ -37,12 +37,12 @@ public:
     int getLimitGeneration() const; //a.ban
     void setLimitGeneration(int value); //a.ban
 
-    string getFileRulePath() const;
-    string getFileInputValuePath() const;
-    string getDirectoryOutputValuePath() const;
+    string getFileRulePath() const;// a.ban
+    string getFileInputValuePath() const; //a.ban
+    string getDirectoryOutputValuePath() const; //a.ban
 
-    string getNeighborPostionText() const;
-    void setNeighborPostionText(const string &value);
+    string getNeighborPostionText() const; //a.ban
+    void setNeighborPostionText(const string &value); //a.ban
 };
 
 #endif // CONFIGURATION_H
