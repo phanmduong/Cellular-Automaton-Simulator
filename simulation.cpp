@@ -39,7 +39,7 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
 {
     //TODO: get NeighborPosition from neightborPostionText (t.kieu)
     // an exampple of neighorPositionText: 1 0\n0 -1\n2 3\n2 -1
-
+cout << neighborPostionText;
     vector<string> neighbor_list_str;
     vector<NeighborPosition *> neighbor_list; 
 
@@ -159,11 +159,11 @@ void Simulation::run()
 
     this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
-    //TODO: foreach times (int time;) (t.kieu) -- done??
-    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
-    {
-        this->grid->generation();
-        string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
-        this->writeValueGrid(file_output_name);
-    }
+//    //TODO: foreach times (int time;) (t.kieu) -- done??
+//    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
+//    {
+//        this->grid->generation();
+//        string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
+//        this->writeValueGrid(file_output_name);
+//    }
 }

@@ -15,6 +15,9 @@ class MainWindow : public QMainWindow
     Simulation *simulation;
     Configuration *config;
 
+    void getItemRule();
+    void getInitialValue();
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
