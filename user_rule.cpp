@@ -1,4 +1,4 @@
-#include "../rule.h";
+#include "rule.h";
 #include <vector>;
 
 vector<Rule*> rules;

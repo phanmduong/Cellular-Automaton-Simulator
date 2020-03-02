@@ -34,6 +34,12 @@ private slots:
 
     void on_launchButton_clicked();
 
+    void on_chooseFileRule_clicked();
+
+    void on_chooseFileInput_clicked();
+
+    void on_chooseDirOutput_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -13,14 +13,26 @@ vector<State *> Simulation::getStates() const
     return states;
 }
 
+vector<State *> Simulation::createStates(int numberOfState)
+{
+    vector<State *> states;
+    for(int i = 0; i < numberOfState; ++i) {
+         State *state = new State(to_string(i));
+         states.push_back(state);
+    }
+    return states;
+}
+
 Rule *Simulation::getRuleWithRuleName(string ruleName)
 {
     //TODO: get rule from list rule with rule name (m.duong)
-    for(int i = 0; i < this->rules.size(); ++i){
+    for(unsigned int i = 0; i < this->rules.size(); ++i){
         if (this->rules[i]->getName() == ruleName){
             return this->rules[i];
         }
     }
+
+    return nullptr;
 }
 
 vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostionText)
@@ -40,7 +52,7 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
     }
     neighbor_list_str.push_back(neighborPostionText);
 
-    for (int i = 0; i <= neighbor_list_str.size() - 1; i++) {
+    for (unsigned int i = 0; i <= neighbor_list_str.size() - 1; i++) {
         int blank_position = neighbor_list_str[0].find(" ");
         string x_temp = neighbor_list_str[i].substr(0,blank_position);
         neighbor_list_str[i].erase(0, blank_position + 1);
@@ -50,12 +62,10 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
         int y = stoi(y_temp);
 
         NeighborPosition a(x, y);
-        neighbor_list.push_back(&a);
-
-        return neighbor_list;
+        neighbor_list.push_back(&a);        
     } 
-    
-    
+
+    return neighbor_list;
 }
 
 //BanTQ - 3/1/2020 - read the initialized values for the simulator from the configuration
@@ -94,14 +104,13 @@ void Simulation::writeValueGrid(const string path)
     //TODO: write state of cell to file
     //open file
     std::ofstream ofs(path);
-    int A[this->config->getWidth()][config->getHeight()];
 
     //write to file
     for (int i = 0; i <this->config->getWidth(); ++i)
     {
         for (int j = 0; j < config->getHeight(); ++j)
         {
-            ofs << this->grid->getCell(i,j)->getState << std::endl;
+            ofs << this->grid->getCell(i,j)->getState() << std::endl;
         }
     }
 
@@ -109,11 +118,19 @@ void Simulation::writeValueGrid(const string path)
 
 void Simulation::getRulesFromFile(string path)
 {
+
     //TODO: get list rule in file .so (m.duong)
-    void* handle = dlopen("./rule.so", RTLD_LAZY);
+    char path_arr[path.length()];
+    strcpy(path_arr, path.c_str());
+
+    void* handle = dlopen(path_arr, RTLD_LAZY);
+    if (!handle) {
+        fputs(dlerror(), stderr);
+        exit(1);
+    }
     typedef void (*rule_t)();
     typedef vector<Rule*> (*rule_t2)();
-    dlerror();
+
     rule_t initRules = (rule_t) dlsym(handle, "initRules");
     initRules();
     rule_t2 getAllRules = (rule_t2) dlsym(handle, "getAllRules");
@@ -124,7 +141,6 @@ void Simulation::getRulesFromFile(string path)
 Simulation::Simulation(Configuration *config)
 {
     this->config = config;
-    this->getRulesFromFile(this->config->getFileRulePath());
 }
 
 Simulation::~Simulation()
@@ -140,12 +156,12 @@ void Simulation::run()
     this->readInitValueGrid(this->config->getFileInputValuePath());
 
     Rule *rule =  this->getRuleWithRuleName(this->config->getRuleName());
-    vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeightborPostionText());
+    vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeighborPostionText());
 
-    this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule);
+    this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
     //TODO: foreach times (int time;) (t.kieu) -- done??
-    for(int time = 1; time <= this->config->getLimitGeneration(); time++) 
+    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
     {
         this->grid->generation();
         string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";

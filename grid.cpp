@@ -2,12 +2,13 @@
 
 /* Written by DuongHV */
 
-Grid::Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule const *rule)
+Grid::Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule *rule, vector<State *> states)
 {
     this->width = width;
     this->height = height;
     this->neighborPositions = neigtborPositions;
     this->rule = rule;
+    this->states = states;
     this->createGridCells();
 }
 
@@ -32,7 +33,8 @@ void Grid::generation()
     for (unsigned i = 0; i < this->cells.size(); i++)
     {
         vector<Cell*> neighbors = this->getNeighbors(this->cells[i]);
-        this->cells[i]->setState(this->rule->excuteRule(this->cells[i], neighbors));
+        State *state = this->rule->excuteRule(this->cells[i], neighbors, this->states);
+        this->cells[i]->setState(state);
     }
 }
 
@@ -43,8 +45,8 @@ vector<Cell*> Grid::getNeighbors(const Cell *cell)
 
     for (unsigned i = 0; i < this->neighborPositions.size(); i++)
     {
-        int x_neighbor = calculateCoordinates(cell->getX(), this->neighborPositions[i]->getX(), this->width);
-        int y_neighbor = calculateCoordinates(cell->getY(), this->neighborPositions[i]->getY(), this->height);
+        int x_neighbor = this->calculateCoordinates(cell->getX(), this->neighborPositions[i]->getX(), this->width);
+        int y_neighbor = this->calculateCoordinates(cell->getY(), this->neighborPositions[i]->getY(), this->height);
 
         listNeighbors.push_back(getCell(x_neighbor,y_neighbor));
     }
@@ -62,7 +64,7 @@ Step 3: Consider the sign of the result in step 2:
     + If result> = 0: keep the value
     + if result <0: final value = result of step 2 + the corresponding length (width/height) of the grid
 */
-int calculateCoordinates(int idx_cell, int distance, int length)
+int Grid::calculateCoordinates(int idx_cell, int distance, int length)
 {
     int coordinate = (idx_cell+distance)%length;
 
@@ -70,7 +72,7 @@ int calculateCoordinates(int idx_cell, int distance, int length)
     {
         coordinate += length;
     }
-    
+
     return coordinate;
 }
 
@@ -86,3 +88,7 @@ void Grid::createGridCells()
         }
     }
 }
+
+
+
+

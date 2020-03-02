@@ -4,6 +4,7 @@
 #include <QRandomGenerator>
 #include <QTimer>
 #include <QDebug>
+#include <QFileDialog>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,10 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->config = new Configuration();
     this->simulation = new Simulation(this->config);
 
-    vector<Rule *> rules = this->simulation->getRules();
-    for(int i = 0; i< rules.size(); ++i){
-        this->ui->rulesComboBox->addItem(QString::fromStdString(rules[i]->getName()));
-    }
+
 }
 
 MainWindow::~MainWindow()
@@ -60,4 +58,37 @@ void MainWindow::on_rulesComboBox_currentIndexChanged(const QString &arg1)
 void MainWindow::on_launchButton_clicked()
 {
     this->simulation->run();
+}
+
+void MainWindow::on_chooseFileRule_clicked()
+{
+    QString file_name = QFileDialog::getOpenFileName(this,"Choose file rule");
+
+    this->ui->ruleFilePathEdit->setText(file_name);
+
+    this->config->setFileRulePath(file_name.toStdString());
+    this->simulation->getRulesFromFile(this->config->getFileRulePath());
+
+    vector<Rule *> rules = this->simulation->getRules();
+    for(int i = 0; i< rules.size(); ++i){
+        this->ui->rulesComboBox->addItem(QString::fromStdString(rules[i]->getName()));
+    }
+}
+
+void MainWindow::on_chooseFileInput_clicked()
+{
+    QString file_name = QFileDialog::getOpenFileName(this,"Choose input value file");
+
+    this->ui->inputFilePathEdit->setText(file_name);
+
+    this->config->setFileInputValuePath(file_name.toStdString());
+}
+
+void MainWindow::on_chooseDirOutput_clicked()
+{
+    QString path = QFileDialog::getExistingDirectory(this,"Choose directory output file");
+
+    this->ui->outputDirPathEdit->setText(path);
+
+    this->config->setDirectoryOutputValuePath(path.toStdString());
 }

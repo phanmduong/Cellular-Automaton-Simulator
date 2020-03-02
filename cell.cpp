@@ -17,15 +17,17 @@ Cell::Cell(int x, int y)
     this->y = y;
 }
 
+Cell::~Cell()
+{
+
+}
+
 
 Cell::Cell(int x, int y, const State* state){
     this->x = x;
     this->y = y;
     this->state = state;
 }
-
-// destructor
-Cell::~Cell() {}
 
 int Cell::getX() const
 {
