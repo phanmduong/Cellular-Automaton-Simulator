@@ -70,7 +70,7 @@ void Simulation::writeValueGrid(const string path)
     {
         for (int j = 0; j < config->getHeight(); ++j)
         {
-            ofs << this->grid->getCell(i,j)->getState << std::endl;
+            ofs << this->grid->getCell(i,j)->getState() << std::endl;
         }
     }
 
@@ -108,9 +108,9 @@ void Simulation::run()
     this->readInitValueGrid(this->config->getFileInputValuePath());
 
     Rule *rule =  this->getRuleWithRuleName(this->config->getRuleName());
-    vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeightborPostionText());
+    vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeighborPostionText());
 
-    this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule);
+    this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
     //TODO: foreach times (int time;) (t.kieu)
 

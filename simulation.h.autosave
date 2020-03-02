@@ -12,6 +12,7 @@ class Simulation
     Configuration *config;
     Grid *grid;
     vector<Rule *> rules;
+    vector<State *> states;
 
     vector<State *> createStates(int numberOfState);
 
@@ -31,6 +32,7 @@ public:
     void run();
 
     vector<Rule *> getRules() const;
+    vector<State *> getStates() const;
 };
 
 #endif // SIMULATION_H

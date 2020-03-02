@@ -11,7 +11,8 @@ class Grid
     int height;
     vector<Cell*> cells;
     vector<NeighborPosition*> neighborPositions;
-    Rule const *rule;
+    vector<State *> states; // list states
+    Rule *rule;
 
     // Get list neighbor cells of given cell
     vector<Cell*> getNeighbors(Cell const *cell);
@@ -19,9 +20,12 @@ class Grid
     /* Initialize all cells of grid without state value */
     void createGridCells();
 
+    //In order to calculate coordinate of neighbor cell, we need to do step by step as below
+    int calculateCoordinates(int idx_cell, int distance, int length);
+
 public:
     // Constructor
-    Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule const *rule);
+    Grid(int width,int height, vector<NeighborPosition*> neigtborPositions, Rule *rule, vector<State *> states);
 
     // Destructor
     ~Grid();
