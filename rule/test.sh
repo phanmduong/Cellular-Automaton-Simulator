@@ -1,3 +1,3 @@
 #! /bin/bash
-g++ -o test test.cpp -W -Wall
+g++ -o test test.cpp ../rule.cpp -W -Wall
 ./test

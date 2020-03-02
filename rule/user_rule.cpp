@@ -1,5 +1,5 @@
-#include "../rule.h";
-#include <vector>;
+#include "../rule.h"
+#include <vector>
 
 vector<Rule*> rules;
 
@@ -7,15 +7,68 @@ void registerRule(Rule *rule){
     rules.push_back(rule);
 }
 
-class GameOfLife: public Rule
+class ConwaysGameOfLife: public Rule
 {
-public:
-    GameOfLife(): Rule((string) "Game of Life"){
+     int RULE_SURVIVE[3]={3,4,5};
+     int RULE_BIRTH[1]={2};
+
+    int sizeSurvive = (sizeof(RULE_SURVIVE)/sizeof(*RULE_SURVIVE));
+    int sizeBirth = (sizeof(RULE_BIRTH)/sizeof(*RULE_BIRTH));
+
+    int calNeighbors(vector<Cell*> neighbors){
+        int totalSum = 0;
+        for(unsigned i = 0; i < neighbors.size(); ++i){
+            if (stoi(neighbors[i]->getState()->getName()) == 1){
+                ++totalSum;
+            }
+        }
+        return totalSum;
     }
-    ~GameOfLife(){}
+    bool ruleContains(int n, int rule[]) {
+        int size = (sizeof(rule)/sizeof(*rule));
+        for(int i=0; i < size; i++) {
+            if ( rule[i] == n )
+                return true;
+        }
+        return false;
+    }
+public:
+    ConwaysGameOfLife(): Rule((string) "Conway's Game of Life"){
+    }
+    ~ConwaysGameOfLife(){}
+
+    
 
     virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
-        return states[0];
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+        if ( currentState == 0) {
+                    int neighborsOn = calNeighbors(neighbors);
+                       if (ruleContains(neighborsOn, RULE_BIRTH)){
+                           indexNextState = 1;
+                       }
+                   }
+                   else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+                       int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
+                       bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+                       if (currentState == 1 && shouldSurvive)
+                       {
+                           indexNextState = currentState;
+                       }
+                       else if (!shouldSurvive) {
+                               indexNextState = (currentState + 1) % RULE_GENS;
+                       }
+
+                       if ( currentState > 1)
+                           indexNextState = currentState + 1;
+                   }
+                   else if (currentState >= (RULE_GENS - 1)) {
+                       indexNextState = 0;
+                   }
+
+        return states[indexNextState];
     }
 };
 
@@ -32,7 +85,7 @@ public:
 };
 
 extern "C" void initRules(){
-    registerRule(new GameOfLife());
+    registerRule(new ConwaysGameOfLife());
     registerRule(new GameOfLife2());
 }
 
