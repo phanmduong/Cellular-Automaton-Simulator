@@ -78,9 +78,11 @@ void Simulation::readInitValueGrid(const string path)
     std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
     exit(-1);
     }
-    ifs>>m_width>>m_height;
-    this->config->setWidth(m_width);
-    this->config->setHeight(m_height);
+//    ifs>>m_width>>m_height;
+//    this->config->setWidth(m_width);
+//    this->config->setHeight(m_height);
+    m_width = this->config->getWidth();
+    m_height = this->config->getHeight();
     //read matrix from the input file and set the value to the grid
     int A[m_width][m_height];
     for (int i = 0; i <this->config->getWidth(); ++i)
@@ -93,9 +95,6 @@ void Simulation::readInitValueGrid(const string path)
         }
     }
     ifs.close();
-    //State *state = this->states[value]; // value get in file;
-    //TODO: for each cell with x, y (q.ban)
-    //this->grid->getCell(x, y)->setState(state);
 }
 
 //BanTQ - 3/1/2020 - Write the result to a output file
