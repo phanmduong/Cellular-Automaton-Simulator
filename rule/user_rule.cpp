@@ -91,14 +91,23 @@ class Bombers: public Rule {
     // 8 neighbors
 
     int RULE_SURVIVE[3] = {3,4,5};
-    int RUlE_BIRTH[2] = {2,4};
+    int RUlE_BIRTH[2] = {2,4}; 
+    // birth: from 0 to 1, needs 2 or 4 neighbour which are in state 1;
 
     public:
         Bombers(): Rule((string) "Bombers") {}
         ~Bombers() {}
 
         virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+            const unsigned int n_states = states.size();
+            int currentState = stoi(cell->getState()->getName());
+            int nextState;
+
+            int cnt_same_neighbor = 0; 
             int cnt_live_neighbor = 0;
+
+            
+
             for (int i = 0; i < neighbors.size(); i++) {
                 if (neighbors[i]->getState() != cell->getState()) cnt_live_neighbor++;
             }
