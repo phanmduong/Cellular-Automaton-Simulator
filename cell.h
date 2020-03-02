@@ -1,6 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
-#include <state.h>
+#include "state.h"
 
 class Cell
 {
@@ -9,8 +9,10 @@ class Cell
 
 public:
 
-    Cell(int x, int y, State const *state); //kieu
-    Cell(int x, int y); //Kieu
+    Cell(int x, int y, State const *state);
+    Cell(int x, int y);
+
+    ~Cell();
 
     int getX() const;
     int getY() const;

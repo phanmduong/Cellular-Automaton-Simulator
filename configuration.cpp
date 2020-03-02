@@ -87,6 +87,21 @@ void Configuration::setNeighborPostionText(const string &value)
     this->neighborPostionText = value;
 }
 
+void Configuration::setFileRulePath(const string &value)
+{
+    fileRulePath = value;
+}
+
+void Configuration::setFileInputValuePath(const string &value)
+{
+    fileInputValuePath = value;
+}
+
+void Configuration::setDirectoryOutputValuePath(const string &value)
+{
+    directoryOutputValuePath = value;
+}
+
 Configuration::Configuration()
 {
 

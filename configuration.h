@@ -14,9 +14,9 @@ class Configuration
     string ruleName;
     int limitGeneration;
 
-    string fileRulePath = "./rule/rule.so";
-    string fileInputValuePath = "./input.txt";
-    string directoryOutputValuePath = "./output";
+    string fileRulePath =  "";
+    string fileInputValuePath = "";
+    string directoryOutputValuePath = "";
 
 public:
     Configuration();
@@ -43,6 +43,9 @@ public:
 
     string getNeighborPostionText() const; //a.ban
     void setNeighborPostionText(const string &value); //a.ban
+    void setFileRulePath(const string &value);
+    void setFileInputValuePath(const string &value);
+    void setDirectoryOutputValuePath(const string &value);
 };
 
 #endif // CONFIGURATION_H

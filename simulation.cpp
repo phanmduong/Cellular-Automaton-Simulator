@@ -109,11 +109,19 @@ void Simulation::writeValueGrid(const string path)
 
 void Simulation::getRulesFromFile(string path)
 {
+
     //TODO: get list rule in file .so (m.duong)
-    void* handle = dlopen("./rule.so", RTLD_LAZY);
+    char path_arr[path.length()];
+    strcpy(path_arr, path.c_str());
+
+    void* handle = dlopen(path_arr, RTLD_LAZY);
+    if (!handle) {
+        fputs(dlerror(), stderr);
+        exit(1);
+    }
     typedef void (*rule_t)();
     typedef vector<Rule*> (*rule_t2)();
-    dlerror();
+
     rule_t initRules = (rule_t) dlsym(handle, "initRules");
     initRules();
     rule_t2 getAllRules = (rule_t2) dlsym(handle, "getAllRules");
@@ -124,7 +132,6 @@ void Simulation::getRulesFromFile(string path)
 Simulation::Simulation(Configuration *config)
 {
     this->config = config;
-    this->getRulesFromFile(this->config->getFileRulePath());
 }
 
 Simulation::~Simulation()
@@ -135,20 +142,20 @@ Simulation::~Simulation()
 
 void Simulation::run()
 {
-    this->states = this->createStates(this->config->getNumberOfState());
+//    this->states = this->createStates(this->config->getNumberOfState());
 
-    this->readInitValueGrid(this->config->getFileInputValuePath());
+//    this->readInitValueGrid(this->config->getFileInputValuePath());
 
-    Rule *rule =  this->getRuleWithRuleName(this->config->getRuleName());
-    vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeighborPostionText());
+//    Rule *rule =  this->getRuleWithRuleName(this->config->getRuleName());
+//    vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeighborPostionText());
 
-    this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
+//    this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
-    //TODO: foreach times (int time;) (t.kieu) -- done??
-    for(int time = 1; time <= this->config->getLimitGeneration(); time++) 
-    {
-        this->grid->generation();
-        string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
-        this->writeValueGrid(file_output_name);
-    }
+//    //TODO: foreach times (int time;) (t.kieu) -- done??
+//    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
+//    {
+//        this->grid->generation();
+//        string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
+//        this->writeValueGrid(file_output_name);
+//    }
 }
