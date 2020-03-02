@@ -18,7 +18,7 @@ class Simulation
 
     Rule* getRuleWithRuleName(string ruleName);
 
-    vector<NeighborPosition*> getNeighborPostions(string neightborPostionText);
+    vector<NeighborPosition*> getNeighborPostions(string neighborPostionText);
 
     void readInitValueGrid(string const path);
     void writeValueGrid(string const path);
