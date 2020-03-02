@@ -91,8 +91,7 @@ class Bombers: public Rule {
     // 8 neighbors
 
     int RULE_SURVIVE[3] = {3,4,5};
-    int RUlE_BIRTH
-
+    int RUlE_BIRTH[2] = {2,4};
 
     public:
         Bombers(): Rule((string) "Bombers") {}
