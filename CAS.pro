@@ -22,6 +22,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     neighbor_position.cpp \
+    rule.cpp \
     simulation.cpp \
     state.cpp
 
