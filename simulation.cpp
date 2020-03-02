@@ -50,6 +50,7 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
         neighbor_list_str.push_back(neighborPostionText.substr(0, pos));
         neighborPostionText.erase(0, pos + detimiter.length());
     }
+    neighbor_list_str.push_back(neighborPostionText);
     
 
     for (unsigned int i = 0; i <= neighbor_list_str.size() - 1; i++) {
