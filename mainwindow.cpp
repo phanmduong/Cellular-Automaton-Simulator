@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QFileDialog>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -72,4 +73,22 @@ void MainWindow::on_chooseFileRule_clicked()
     for(int i = 0; i< rules.size(); ++i){
         this->ui->rulesComboBox->addItem(QString::fromStdString(rules[i]->getName()));
     }
+}
+
+void MainWindow::on_chooseFileInput_clicked()
+{
+    QString file_name = QFileDialog::getOpenFileName(this,"Choose input value file");
+
+    this->ui->inputFilePathEdit->setText(file_name);
+
+    this->config->setFileInputValuePath(file_name.toStdString());
+}
+
+void MainWindow::on_chooseDirOutput_clicked()
+{
+    QString path = QFileDialog::getExistingDirectory(this,"Choose directory output file");
+
+    this->ui->outputDirPathEdit->setText(path);
+
+    this->config->setDirectoryOutputValuePath(path.toStdString());
 }
