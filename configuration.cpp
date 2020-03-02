@@ -1,6 +1,6 @@
 #include "configuration.h"
 
-//bantq code 29/2/2020
+//BanTQ code 29/2/2020
 //get state
 int Configuration::getNumberOfState() const
 {
