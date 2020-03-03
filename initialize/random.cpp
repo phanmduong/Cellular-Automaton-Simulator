@@ -36,10 +36,10 @@ int main(void) {
     ofstream textfile;
     textfile.open (filename, ofstream::out | ofstream::app);
     
-    for (unsigned i = 0; i < width; i++)
+    for (unsigned i = 0; i < height; i++)
     {
         string line = "";
-        for (unsigned j = 0; j < height; j++)
+        for (unsigned j = 0; j < width; j++)
         {
             int rd_value = rand() % no_state;
             line += std::to_string(rd_value) + " ";
