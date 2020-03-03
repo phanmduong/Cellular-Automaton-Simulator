@@ -31,11 +31,21 @@ Cell* Grid::getCell(int x, int y)
 /* Generate all new state of each cell in grid at each generation and update for all cells */
 void Grid::generation()
 {
+    vector<Cell> cells;
     for (unsigned i = 0; i < this->cells.size(); i++)
     {
-        vector<Cell*> neighbors = this->getNeighbors(this->cells[i]);
+        Cell cell(this->cells[i]);
+        cells.push_back(cell);
+    }
 
-        State *state = this->rule->excuteRule(this->cells[i], neighbors, this->states);
+    for (unsigned i = 0; i < cells.size(); i++)
+    {
+        qDebug() << cells[i].getX();
+        qDebug() << cells[i].getY();
+        qDebug() << "---";
+        vector<Cell*> neighbors = this->getNeighbors(&cells[i]);
+        State *state = this->rule->excuteRule(&cells[i], neighbors, this->states);
+
         this->cells[i]->setState(state);
     }
 }
@@ -81,12 +91,10 @@ int Grid::calculateCoordinates(int idx_cell, int distance, int length)
 /* Initialize all cells of grid without state value */
 void Grid::createGridCells()
 {
-    for (unsigned j = 0; j < this->height; j++)
-    {
-    for (unsigned i = 0; i < this->width; i++)
-    {
-            Cell* cell = new Cell(i,j);
-            this->cells.push_back(cell);
+    for (unsigned j = 0; j < this->height; j++){
+        for (unsigned i = 0; i < this->width; i++){
+                Cell* cell = new Cell(i,j);
+                this->cells.push_back(cell);
         }
     }
 }

@@ -66,8 +66,8 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
         int x = stoi(x_temp);
         int y = stoi(y_temp);
 
-        NeighborPosition a(x, y);
-        neighbor_list.push_back(&a);
+        NeighborPosition *a = new NeighborPosition(x, y);
+        neighbor_list.push_back(a);
     }
 
     return neighbor_list;
@@ -92,9 +92,8 @@ void Simulation::readInitValueGrid(const string path)
     m_height = this->config->getHeight();
     //read matrix from the input file and set the value to the grid
     int A[m_width][m_height];
+    for (int j = 0; j < this->config->getHeight(); ++j){
     for (int i = 0; i <this->config->getWidth(); ++i)
-    {
-        for (int j = 0; j < this->config->getHeight(); ++j)
         {
             ifs >> A[i][j];
             State *state = this->states[A[i][j]];
@@ -113,12 +112,12 @@ void Simulation::writeValueGrid(const string path)
     //TODO: write state of cell to file
     //open file
     std::ofstream ofs(path);
-
     //write to file
-    for (int i = 0; i <this->config->getWidth(); ++i)
+    for (int j = 0; j < config->getHeight(); ++j)
     {
-        for (int j = 0; j < config->getHeight(); ++j)
-        {
+
+    for (int i = 0; i <this->config->getWidth(); ++i)
+    {   
             ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
         }
         ofs << std::endl;
@@ -170,7 +169,8 @@ void Simulation::run()
     this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
     this->readInitValueGrid(this->config->getFileInputValuePath());
-//    //TODO: foreach times (int time;) (t.kieu) -- done??
+
+    //TODO: foreach times (int time;) (t.kieu) -- done??
     for(int time = 1; time <= this->config->getLimitGeneration(); time++)
     {
         this->grid->generation();
