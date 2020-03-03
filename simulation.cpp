@@ -42,19 +42,23 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
     // an exampple of neighorPositionText: 1 0\n0 -1\n2 3\n2 -1
 
     vector<string> neighbor_list_str;
-    vector<NeighborPosition *> neighbor_list; 
+    vector<NeighborPosition *> neighbor_list;
 
     string detimiter = "\n";
     size_t pos = 0;
 
-    while ( (pos = neighborPostionText.find(detimiter)) != string::npos) { 
+    while (neighborPostionText[neighborPostionText.size()-1] == '\n') {
+        neighborPostionText.erase(neighborPostionText.size()-1,1);
+    }
+
+    while ( (pos = neighborPostionText.find(detimiter)) != string::npos ) {
         neighbor_list_str.push_back(neighborPostionText.substr(0, pos));
         neighborPostionText.erase(0, pos + detimiter.length());
     }
     neighbor_list_str.push_back(neighborPostionText);
 
-    for (unsigned int i = 0; i <= neighbor_list_str.size() - 1; i++) {
-        int blank_position = neighbor_list_str[0].find(" ");
+    for (int i = 0; i <= neighbor_list_str.size() - 1; i++) {
+        int blank_position = neighbor_list_str[i].find(" ");
         string x_temp = neighbor_list_str[i].substr(0,blank_position);
         neighbor_list_str[i].erase(0, blank_position + 1);
         string y_temp = neighbor_list_str[i];
@@ -64,7 +68,7 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
 
         NeighborPosition a(x, y);
         neighbor_list.push_back(&a);
-    } 
+    }
 
     return neighbor_list;
 }

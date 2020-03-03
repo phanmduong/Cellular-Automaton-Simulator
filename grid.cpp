@@ -34,16 +34,9 @@ void Grid::generation()
     for (unsigned i = 0; i < this->cells.size(); i++)
     {
         vector<Cell*> neighbors = this->getNeighbors(this->cells[i]);
-        try {
-            this->cells[i];
-                    this->states;
-            neighbors;
-             this->rule->excuteRule(this->cells[i], neighbors, this->states);
-        } catch (std::exception e) {
-           qDebug() << e.what();
-        }
 
-//        this->cells[i]->setState(state);
+        State *state = this->rule->excuteRule(this->cells[i], neighbors, this->states);
+        this->cells[i]->setState(state);
     }
 }
 
