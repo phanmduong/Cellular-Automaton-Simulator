@@ -7,6 +7,27 @@
 #include <QFileDialog>
 
 
+void MainWindow::getItemRule()
+{
+    this->simulation->getRulesFromFile(this->config->getFileRulePath());
+    vector<Rule *> rules = this->simulation->getRules();
+    this->ui->rulesComboBox->clear();
+    for(int i = 0; i< rules.size(); ++i){
+        this->ui->rulesComboBox->addItem(QString::fromStdString(rules[i]->getName()));
+    }
+}
+
+void MainWindow::getInitialValue()
+{
+     this->config->setHeight(this->ui->heightEdit->text().toInt());
+    this->config->setWidth(this->ui->widthEdit->text().toInt());
+    this->config->setNumberOfState(this->ui->numberOfStateEdit->text().toInt());
+    this->config->setLimitGeneration(this->ui->limitGenerationEdit->text().toInt());
+    this->config->setNeighborPostionText(this->ui->neighborsEdit->toPlainText().toStdString());
+    this->config->setRuleName(this->ui->rulesComboBox->currentText().toStdString());
+}
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,7 +36,13 @@ MainWindow::MainWindow(QWidget *parent)
     this->config = new Configuration();
     this->simulation = new Simulation(this->config);
 
-
+    this->getItemRule();
+    this->getInitialValue();
+    qDebug() << QString::fromStdString(to_string(this->config->getWidth()));
+    qDebug() << QString::fromStdString(to_string(this->config->getHeight()));
+    qDebug() << QString::fromStdString(to_string(this->config->getNumberOfState()));
+    qDebug() << QString::fromStdString(to_string(this->config->getLimitGeneration()));
+    qDebug() << QString::fromStdString(this->config->getNeighborPostionText());
 }
 
 MainWindow::~MainWindow()
@@ -57,7 +84,7 @@ void MainWindow::on_rulesComboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_launchButton_clicked()
 {
-    this->simulation->run();
+     this->simulation->run();
 }
 
 void MainWindow::on_chooseFileRule_clicked()
@@ -67,13 +94,10 @@ void MainWindow::on_chooseFileRule_clicked()
     this->ui->ruleFilePathEdit->setText(file_name);
 
     this->config->setFileRulePath(file_name.toStdString());
-    this->simulation->getRulesFromFile(this->config->getFileRulePath());
-
-    vector<Rule *> rules = this->simulation->getRules();
-    for(int i = 0; i< rules.size(); ++i){
-        this->ui->rulesComboBox->addItem(QString::fromStdString(rules[i]->getName()));
-    }
+    this->getItemRule();
 }
+
+
 
 void MainWindow::on_chooseFileInput_clicked()
 {

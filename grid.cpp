@@ -1,4 +1,5 @@
 #include "grid.h"
+#include <QDebug>
 
 /* Written by DuongHV */
 
@@ -20,8 +21,8 @@ Grid::~Grid()
 
 Cell* Grid::getCell(int x, int y)
 {
-    if(x<0 || x >= this->width) return nullptr;
-    if(y<0 || y >= this->height) return nullptr;
+    if (x<0 || x >= this->width) return nullptr;
+    if (y<0 || y >= this->height) return nullptr;
 
     //else
     return this->cells[y*this->width+x];
@@ -33,8 +34,16 @@ void Grid::generation()
     for (unsigned i = 0; i < this->cells.size(); i++)
     {
         vector<Cell*> neighbors = this->getNeighbors(this->cells[i]);
-        State *state = this->rule->excuteRule(this->cells[i], neighbors, this->states);
-        this->cells[i]->setState(state);
+        try {
+            this->cells[i];
+                    this->states;
+            neighbors;
+             this->rule->excuteRule(this->cells[i], neighbors, this->states);
+        } catch (std::exception e) {
+           qDebug() << e.what();
+        }
+
+//        this->cells[i]->setState(state);
     }
 }
 
@@ -79,10 +88,10 @@ int Grid::calculateCoordinates(int idx_cell, int distance, int length)
 /* Initialize all cells of grid without state value */
 void Grid::createGridCells()
 {
+    for (unsigned j = 0; j < this->height; j++)
+    {
     for (unsigned i = 0; i < this->width; i++)
     {
-        for (unsigned j = 0; j < this->height; j++)
-        {
             Cell* cell = new Cell(i,j);
             this->cells.push_back(cell);
         }

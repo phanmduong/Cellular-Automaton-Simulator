@@ -1,7 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
 #include "state.h"
-
 class Cell
 {
     int x,y;

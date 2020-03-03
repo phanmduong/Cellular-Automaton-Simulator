@@ -14,9 +14,9 @@ class Configuration
     string ruleName;
     int limitGeneration;
 
-    string fileRulePath =  "";
-    string fileInputValuePath = "";
-    string directoryOutputValuePath = "";
+    string fileRulePath =  "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/rule/rule.so";
+    string fileInputValuePath = "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/initialize/input.txt";
+    string directoryOutputValuePath = "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/output";
 
 public:
     Configuration();

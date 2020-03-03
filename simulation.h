@@ -14,6 +14,7 @@ class Simulation
     Grid *grid;
     vector<Rule *> rules;
     vector<State *> states;
+    void* handleLibRule;
 
     vector<State *> createStates(int numberOfState);
 
