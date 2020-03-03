@@ -1,5 +1,8 @@
 #include "../rule.h"
 #include <vector>
+#include <random>
+#include <iostream>
+
 
 vector<Rule*> rules;
 
@@ -146,6 +149,91 @@ class StarWars: public Rule
     }
 }; 
 
+//BanTQ - Probability rules
+class ProbabilisticStarWar: public Rule {
+    public:
+    int RULE_SURVIVE[3]={3,4,5};
+     int RULE_BIRTH[1]={2};
+
+    int sizeSurvive = (sizeof(RULE_SURVIVE)/sizeof(*RULE_SURVIVE));
+    int sizeBirth = (sizeof(RULE_BIRTH)/sizeof(*RULE_BIRTH));
+
+    int calNeighbors(vector<Cell*> neighbors){
+        int totalSum = 0;
+        for(unsigned i = 0; i < neighbors.size(); ++i){
+            if (stoi(neighbors[i]->getState()->getName()) == 1){
+                ++totalSum;
+            }
+        }
+        return totalSum;
+    }
+    bool ruleContains(int n, int rule[]) {
+        int size = (sizeof(rule)/sizeof(*rule));
+        for(int i=0; i < size; i++) {
+            if ( rule[i] == n )
+                return true;
+        }
+        return false;
+    }
+    
+    ProbabilisticStarWar(): Rule((string) "Probabilistic Star Wars") {
+
+    }
+    ~ProbabilisticStarWar() {}
+    virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
+        //Generate the random value
+        std::random_device rd;  //Will be used to obtain a seed for the random number engine
+        std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+        std::uniform_int_distribution<> dis(1, 1000);
+        //state 0: prob <= 0.5; state 1: prob <= 0.75; state 2: prob <=0.9; state 3: prob <=0.99
+ 
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+        int neighborsOn = calNeighbors(neighbors);
+        bool shouldBirth = ruleContains(neighborsOn, RULE_BIRTH);
+        bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+        if (RULE_GENS <> 4) {
+            std::cerr<<"The number of state is not correct, it should be 4 ..."<<std::endl;
+        exit(-1);
+        } 
+        if (shouldBirth || !shouldSurvive) {
+            if (currentState = 0) {
+                    double ran = dis(gen)/1000;
+                    if (ran <= 0.5) {
+                        indexNextState = currentState + 1;    
+                    } else {
+                        indexNextState = currentState; 
+                    }                    
+             } else if (currentState == 1) {
+                    double ran = dis(gen)/1000;
+                    if (ran > 0.5 && ran <=0.75) {
+                        indexNextState = currentState + 1;    
+                    } else {
+                        indexNextState = currentState; 
+                    }   
+             } else if (currentState == 2) {
+                  double ran = dis(gen)/1000;
+                    if (ran > 0.75 && ran <=0.9) {
+                        indexNextState = currentState + 1;    
+                    } else {
+                        indexNextState = currentState; 
+                    }   
+             } else if (currentState == 3) {
+                  double ran = dis(gen)/1000;
+                    if (ran > 0.9 && ran <= 0.99) {
+                        indexNextState = currentState + 1;    
+                    } else {
+                        indexNextState = currentState; 
+                    }   
+             }        
+        } else {
+            indexNextState = currentState;
+        }              
+        return states[indexNextState];
+    }
+};
 
 class Bombers: public Rule {
     // 345/24/25
@@ -202,7 +290,7 @@ class Bombers: public Rule {
                 }
             }
         }
-    };
+};
 
 
 
