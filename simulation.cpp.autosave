@@ -93,8 +93,7 @@ void Simulation::readInitValueGrid(const string path)
     //read matrix from the input file and set the value to the grid
     int A[m_width][m_height];
     for (int j = 0; j < this->config->getHeight(); ++j){
-    for (int i = 0; i <this->config->getWidth(); ++i)
-        {
+        for (int i = 0; i < this->config->getWidth(); ++i){
             ifs >> A[i][j];
             State *state = this->states[A[i][j]];
             if (this->grid->getCell(i,j) != nullptr){
@@ -113,16 +112,12 @@ void Simulation::writeValueGrid(const string path)
     //open file
     std::ofstream ofs(path);
     //write to file
-    for (int j = 0; j < config->getHeight(); ++j)
-    {
-
-    for (int i = 0; i <this->config->getWidth(); ++i)
-    {   
-            ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
+    for (int j = 0; j < config->getHeight(); ++j){
+        for (int i = 0; i < this->config->getWidth(); ++i){   
+                ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
         }
         ofs << std::endl;
     }
-
 }
 
 void Simulation::getRulesFromFile(string path)

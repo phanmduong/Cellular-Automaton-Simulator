@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->config = new Configuration();
     this->simulation = new Simulation(this->config);
 
-//    this->getItemRule();
+    this->getItemRule();
     this->getInitialValue();
     qDebug() << QString::fromStdString(to_string(this->config->getWidth()));
     qDebug() << QString::fromStdString(to_string(this->config->getHeight()));

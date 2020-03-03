@@ -81,12 +81,10 @@ int Grid::calculateCoordinates(int idx_cell, int distance, int length)
 /* Initialize all cells of grid without state value */
 void Grid::createGridCells()
 {
-    for (unsigned j = 0; j < this->height; j++)
-    {
-    for (unsigned i = 0; i < this->width; i++)
-    {
-            Cell* cell = new Cell(i,j);
-            this->cells.push_back(cell);
+    for (unsigned j = 0; j < this->height; j++){
+        for (unsigned i = 0; i < this->width; i++){
+                Cell* cell = new Cell(i,j);
+                this->cells.push_back(cell);
         }
     }
 }
