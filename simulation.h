@@ -7,9 +7,12 @@
 #include <rule.h>
 #include <neighbor_position.h>
 #include <vector>
+#include "ui_mainwindow.h"
+#include <QObject>
 
-class Simulation
+class Simulation : public QObject
 {
+    Q_OBJECT;
     Configuration *config;
     Grid *grid;
     vector<Rule *> rules;
@@ -29,12 +32,17 @@ public:
 
     ~Simulation();
 
-    void run();
-
     vector<Rule *> getRules() const;
     vector<State *> getStates() const;
     void getRulesFromFile(string path);
 
+signals:
+    void progressChanged(float value);
+    void finished();
+
+    // QThread interface
+public slots:
+    void run();
 };
 
 #endif // SIMULATION_H

@@ -33,8 +33,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->ui->progressBar->hide();
     this->config = new Configuration();
     this->simulation = new Simulation(this->config);
+
+    this->simulation->moveToThread(&this->simulationThread);
+
+    connect(&this->simulationThread,&QThread::started, this, &MainWindow::on_started_simulation);
+    connect(this, &MainWindow::start_simulation, this->simulation, &Simulation::run);
+    connect(this->simulation, &Simulation::progressChanged, this, &MainWindow::on_progress_change);
+    connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
 
     this->getItemRule();
     this->getInitialValue();
@@ -47,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    this->simulationThread.quit();
+    this->simulationThread.wait();
     delete simulation;
     delete config;
     delete ui;
@@ -84,7 +94,8 @@ void MainWindow::on_rulesComboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_launchButton_clicked()
 {
-     this->simulation->run();
+    this->simulationThread.start();
+    emit start_simulation();
 }
 
 void MainWindow::on_chooseFileRule_clicked()
@@ -96,8 +107,6 @@ void MainWindow::on_chooseFileRule_clicked()
     this->config->setFileRulePath(file_name.toStdString());
     this->getItemRule();
 }
-
-
 
 void MainWindow::on_chooseFileInput_clicked()
 {
@@ -115,4 +124,35 @@ void MainWindow::on_chooseDirOutput_clicked()
     this->ui->outputDirPathEdit->setText(path);
 
     this->config->setDirectoryOutputValuePath(path.toStdString());
+}
+
+void MainWindow::on_progress_change(float value)
+{
+    this->ui->progressBar->setValue((int) value);
+}
+
+void MainWindow::on_started_simulation()
+{
+    this->disabledUI(true);
+    this->ui->progressBar->show();
+}
+
+void MainWindow::on_finished_simulation()
+{
+    this->disabledUI(false);
+    this->ui->progressBar->hide();
+    this->simulationThread.quit();
+}
+
+void MainWindow::disabledUI(bool value){
+     this->ui->launchButton->setDisabled(value);
+    this->ui->chooseFileInput->setDisabled(value);
+    this->ui->chooseDirOutput->setDisabled(value);
+    this->ui->chooseFileRule->setDisabled(value);
+    this->ui->heightEdit->setDisabled(value);
+    this->ui->widthEdit->setDisabled(value);
+    this->ui->limitGenerationEdit->setDisabled(value);
+    this->ui->numberOfStateEdit->setDisabled(value);
+    this->ui->neighborsEdit->setDisabled(value);
+    this->ui->rulesComboBox->setDisabled(value);
 }

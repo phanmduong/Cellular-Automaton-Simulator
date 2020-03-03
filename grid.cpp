@@ -40,9 +40,6 @@ void Grid::generation()
 
     for (unsigned i = 0; i < cells.size(); i++)
     {
-        qDebug() << cells[i].getX();
-        qDebug() << cells[i].getY();
-        qDebug() << "---";
         vector<Cell*> neighbors = this->getNeighbors(&cells[i]);
         State *state = this->rule->excuteRule(&cells[i], neighbors, this->states);
 
