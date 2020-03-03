@@ -208,7 +208,7 @@ class Bloomerang: public Rule {
     // 234/34678/24
     int calFiringNeighbors(vector<Cell*> neighbors) {
         int cnt = 0;
-        for (int i = 0l i < neighbors.size(); i++) {
+        for (int i = 0; i < neighbors.size(); i++) {
             if (stoi(neighbors[i]->getState()->getName()) == 1) {
                 ++cnt;
             }
@@ -331,7 +331,9 @@ extern "C" void initRules(){
     registerRule(new ConwaysGameOfLife());
     registerRule(new GameOfLife2());
     registerRule(new Bombers()); //t.kieu
+    registerRule(new Bloomerang()); //t.kieu
     registerRule(new Brain());
+
 }
 
 extern "C" vector<Rule*> getAllRules(){
