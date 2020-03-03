@@ -40,36 +40,35 @@ public:
     
 
    State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
-        // const unsigned int RULE_GENS = states.size();
-        // const State *state = cell->getState();
-        // int currentState = stoi(state->getName());
-        // int indexNextState;
-        // if ( currentState == 0) {
-        //             int neighborsOn = calNeighbors(neighbors);
-        //                if (ruleContains(neighborsOn, RULE_BIRTH)){
-        //                    indexNextState = 1;
-        //                }
-        //            }
-        //            else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
-        //                int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
-        //                bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-        //                if (currentState == 1 && shouldSurvive)
-        //                {
-        //                    indexNextState = currentState;
-        //                }
-        //                else if (!shouldSurvive) {
-        //                        indexNextState = (currentState + 1) % RULE_GENS;
-        //                }
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+        if ( currentState == 0) {
+                    int neighborsOn = calNeighbors(neighbors);
+                       if (ruleContains(neighborsOn, RULE_BIRTH)){
+                           indexNextState = 1;
+                       }
+                   }
+                   else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+                       int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
+                       bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+                       if (currentState == 1 && shouldSurvive)
+                       {
+                           indexNextState = currentState;
+                       }
+                       else if (!shouldSurvive) {
+                               indexNextState = (currentState + 1) % RULE_GENS;
+                       }
 
-        //                if ( currentState > 1)
-        //                    indexNextState = currentState + 1;
-        //            }
-        //            else if (currentState >= (RULE_GENS - 1)) {
-        //                indexNextState = 0;
-        //            }
+                       if ( currentState > 1)
+                           indexNextState = (currentState + 1) % RULE_GENS;
+                   }
+                   else if (currentState >= (RULE_GENS - 1)) {
+                       indexNextState = 0;
+                   }
 
-        // return states[indexNextState];
-        return states[0];
+        return states[indexNextState];
     }
 };
 
@@ -80,11 +79,72 @@ public:
     }
     ~GameOfLife2(){}
 
-    virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+    State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
         return states[1];
     }
 };
 
+//BanTQ - Star War 234/2/4
+class StarWars: public Rule
+{
+    public:
+    int RULE_SURVIVE[3]={3,4,5};
+     int RULE_BIRTH[1]={2};
+
+    int sizeSurvive = (sizeof(RULE_SURVIVE)/sizeof(*RULE_SURVIVE));
+    int sizeBirth = (sizeof(RULE_BIRTH)/sizeof(*RULE_BIRTH));
+
+    int calNeighbors(vector<Cell*> neighbors){
+        int totalSum = 0;
+        for(unsigned i = 0; i < neighbors.size(); ++i){
+            if (stoi(neighbors[i]->getState()->getName()) == 1){
+                ++totalSum;
+            }
+        }
+        return totalSum;
+    }
+    bool ruleContains(int n, int rule[]) {
+        int size = (sizeof(rule)/sizeof(*rule));
+        for(int i=0; i < size; i++) {
+            if ( rule[i] == n )
+                return true;
+        }
+        return false;
+    }
+    
+    StarWars(): Rule((string) "Star Wars") {
+
+    }
+    ~StarWars() {}
+    virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+        int neighborsOn = calNeighbors(neighbors);
+        bool shouldBirth = ruleContains(neighborsOn, RULE_BIRTH);
+        bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+        if (shouldBirth) {
+            if (currentState >= (RULE_GENS - 1)) {            
+                    indexNextState = 0;
+                }        
+            else {
+                    indexNextState = currentState + 1;
+                } 
+            }
+        
+        if (!shouldSurvive) {
+            if (currentState >= (RULE_GENS - 1)) {            
+                    indexNextState = 0;
+                } else  {
+                    indexNextState = currentState + 1;
+                } 
+            } else {
+            indexNextState = currentState;
+        }              
+        return states[indexNextState];
+    }
+}; 
 
 
 class Bombers: public Rule {
@@ -120,7 +180,7 @@ class Bombers: public Rule {
         Bombers(): Rule((string) "Bombers") {}
         ~Bombers() {}
 
-        virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+        State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
             const unsigned int RULE_GENS = states.size();
             const State *state = cell->getState();
             int currentState = stoi(state->getName());
