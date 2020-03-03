@@ -85,33 +85,67 @@ public:
     }
 };
 
-<<<<<<< HEAD
+//BanTQ - Star War 234/2/4
 class StarWars: public Rule
 {
     public:
+    int RULE_SURVIVE[3]={3,4,5};
+     int RULE_BIRTH[1]={2};
+
+    int sizeSurvive = (sizeof(RULE_SURVIVE)/sizeof(*RULE_SURVIVE));
+    int sizeBirth = (sizeof(RULE_BIRTH)/sizeof(*RULE_BIRTH));
+
+    int calNeighbors(vector<Cell*> neighbors){
+        int totalSum = 0;
+        for(unsigned i = 0; i < neighbors.size(); ++i){
+            if (stoi(neighbors[i]->getState()->getName()) == 1){
+                ++totalSum;
+            }
+        }
+        return totalSum;
+    }
+    bool ruleContains(int n, int rule[]) {
+        int size = (sizeof(rule)/sizeof(*rule));
+        for(int i=0; i < size; i++) {
+            if ( rule[i] == n )
+                return true;
+        }
+        return false;
+    }
+    
     StarWars(): Rule((string) "Star Wars") {
 
     }
     ~StarWars() {}
     virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
-        State* storeState;
-        for (int i = 0; i < size(states); ++i) {
-            if (cell->getState() == states[i]) {
-                int n = 0;
-                for (int j = 0; j < size(neighbors);++j) {                    
-                    if (neighbors[j]->getState() == cell->getState()) {
-                        n += 1;
-                    }
-
-                }
-                if (n != 3 || n != 4 || n != 5) {
-                    return cell->getState();
-                }
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+        int neighborsOn = calNeighbors(neighbors);
+        bool shouldBirth = ruleContains(neighborsOn, RULE_BIRTH);
+        bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+        if (shouldBirth) {
+            if (currentState >= (RULE_GENS - 1)) {            
+                    indexNextState = 0;
+                }        
+            else {
+                    indexNextState = currentState + 1;
+                } 
             }
-        }
+        
+        if (!shouldSurvive) {
+            if (currentState >= (RULE_GENS - 1)) {            
+                    indexNextState = 0;
+                } else  {
+                    indexNextState = currentState + 1;
+                } 
+            } else {
+            indexNextState = currentState;
+        }              
+        return states[indexNextState];
     }
-} 
-=======
+}; 
 
 
 class Bombers: public Rule {
@@ -239,7 +273,6 @@ public:
     }
 };
 
->>>>>>> dev
 extern "C" void initRules(){
     registerRule(new ConwaysGameOfLife());
     registerRule(new GameOfLife2());
