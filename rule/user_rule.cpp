@@ -12,8 +12,8 @@ void registerRule(Rule *rule){
 
 class ConwaysGameOfLife: public Rule
 {
-     int RULE_SURVIVE[3]={3,4,5};
-     int RULE_BIRTH[1]={2};
+     int RULE_SURVIVE[3]={2,3};
+     int RULE_BIRTH[1]={3};
 
     int sizeSurvive = (sizeof(RULE_SURVIVE)/sizeof(*RULE_SURVIVE));
     int sizeBirth = (sizeof(RULE_BIRTH)/sizeof(*RULE_BIRTH));

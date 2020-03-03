@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <simulation.h>
 #include <configuration.h>
+#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,6 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     Simulation *simulation;
     Configuration *config;
+    QThread simulationThread;
 
     void getItemRule();
     void getInitialValue();
@@ -43,7 +45,18 @@ private slots:
 
     void on_chooseDirOutput_clicked();
 
+    void on_progress_change(float value);
+
+    void on_started_simulation();
+
+    void on_finished_simulation();
+
+signals:
+    void start_simulation();
+
 private:
     Ui::MainWindow *ui;
+
+    void disabledUI(bool value);
 };
 #endif // MAINWINDOW_H

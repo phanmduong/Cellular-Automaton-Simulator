@@ -125,6 +125,11 @@ void Simulation::writeValueGrid(const string path)
 
 }
 
+Simulation::Simulation(Configuration *config)
+{
+    this->config = config;
+}
+
 void Simulation::getRulesFromFile(string path)
 {
 
@@ -145,11 +150,6 @@ void Simulation::getRulesFromFile(string path)
     rule_t2 getAllRules = (rule_t2) dlsym(this->handleLibRule, "getAllRules");
     this->rules = getAllRules();
 //    dlclose(handle);
-}
-
-Simulation::Simulation(Configuration *config)
-{
-    this->config = config;
 }
 
 Simulation::~Simulation()
@@ -176,5 +176,7 @@ void Simulation::run()
         this->grid->generation();
         string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
         this->writeValueGrid(file_output_name);
+        emit progressChanged(time*100/this->config->getLimitGeneration());
     }
+    emit finished();
 }
