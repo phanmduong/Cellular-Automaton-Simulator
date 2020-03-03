@@ -80,8 +80,8 @@ void Simulation::readInitValueGrid(const string path)
     unsigned m_height;
     std::ifstream ifs(path);
     if( !ifs.is_open() ) {
-    std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
-    exit(-1);
+        std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
+        exit(-1);
     }
 
 //    ifs>>m_width>>m_height;
@@ -113,11 +113,8 @@ void Simulation::writeValueGrid(const string path)
     //open file
     std::ofstream ofs(path);
     //write to file
-    for (int j = 0; j < config->getHeight(); ++j)
-    {
-
-    for (int i = 0; i <this->config->getWidth(); ++i)
-    {   
+    for (int j = 0; j < config->getHeight(); ++j) {
+        for (int i = 0; i <this->config->getWidth(); ++i) {   
             ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
         }
         ofs << std::endl;

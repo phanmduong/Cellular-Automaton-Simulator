@@ -284,13 +284,68 @@ class Bombers: public Rule {
                 if (n_sameNeighbors == 3 || n_sameNeighbors == 4 || n_sameNeighbors == 5)
                     return states[currentState];
                 else {
-                    if (currentState == 24) return states[0];
-                    // 24 is the last state
+                    if (currentState == RULE_GENS - 1) return states[0];
                     return states[currentState + 1];
                 }
             }
         }
 };
+
+
+class Bloomerang: public Rule {
+    // 234/34678/24
+    int calFiringNeighbors(vector<Cell*> neighbors) {
+        int cnt = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == 1) {
+                ++cnt;
+            }
+        }
+        return cnt;
+    }
+
+    int sameStateNeighbors(vector<Cell*> neighbors, int currentState) {
+        // count number of neighbors that are in the SAME STATE with current cell
+        int count = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == currentState) {
+                ++count;
+            }
+        }
+    }
+
+    public:
+    Bloomerang(): Rule((string) "bombers") {}
+    ~Bloomerang() {}
+
+    State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+
+        if (currentState == 0) {
+            if (calFiringNeighbors(neighbors) == 3 || calFiringNeighbors(neighbors) == 4
+            ||  calFiringNeighbors(neighbors) == 6
+            ||  calFiringNeighbors(neighbors) == 7
+            ||  calFiringNeighbors(neighbors) == 8)
+                return states[1];
+            return states[0];    
+        } 
+        else {
+            int n_sameNeighbors = sameStateNeighbors(neighbors, currentState);
+                if (n_sameNeighbors == 3 || n_sameNeighbors == 4 || n_sameNeighbors == 2)
+                    return states[currentState];
+                else {
+                    if (currentState == RULE_GENS - 1) return states[0];
+                    return states[currentState + 1];
+                }
+        }
+        
+    }
+
+};
+
+
 
 
 
@@ -364,7 +419,9 @@ extern "C" void initRules(){
     registerRule(new ConwaysGameOfLife());
     registerRule(new GameOfLife2());
     registerRule(new Bombers()); //t.kieu
+    registerRule(new Bloomerang()); //t.kieu
     registerRule(new Brain());
+
 }
 
 extern "C" vector<Rule*> getAllRules(){
