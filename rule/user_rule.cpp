@@ -276,6 +276,7 @@ extern "C" void initRules(){
     registerRule(new ConwaysGameOfLife());
     registerRule(new GameOfLife2());
     registerRule(new Bombers()); //t.kieu
+    registerRule(new Brain());
 }
 
 extern "C" vector<Rule*> getAllRules(){
