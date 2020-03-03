@@ -10,6 +10,7 @@ public:
 
     Cell(int x, int y, State const *state);
     Cell(int x, int y);
+    Cell(Cell *cell);
 
     ~Cell();
 

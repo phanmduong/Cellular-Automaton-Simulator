@@ -43,7 +43,7 @@ public:
         const unsigned int RULE_GENS = states.size();
         const State *state = cell->getState();
         int currentState = stoi(state->getName());
-        int indexNextState;
+        int indexNextState = 0;
         if ( currentState == 0) {
                     int neighborsOn = calNeighbors(neighbors);
                        if (ruleContains(neighborsOn, RULE_BIRTH)){
@@ -62,7 +62,7 @@ public:
                        }
 
                        if ( currentState > 1)
-                           indexNextState = (currentState + 1) % RULE_GENS;
+                           indexNextState = currentState + 1;
                    }
                    else if (currentState >= (RULE_GENS - 1)) {
                        indexNextState = 0;

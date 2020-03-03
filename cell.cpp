@@ -6,6 +6,13 @@ Cell::Cell(int x, int y)
     this->y = y;
 }
 
+Cell::Cell(Cell *cell)
+{
+    this->x = cell->getX();
+    this->y = cell->getY();
+    this->state = cell->getState();
+}
+
 Cell::~Cell()
 {
 

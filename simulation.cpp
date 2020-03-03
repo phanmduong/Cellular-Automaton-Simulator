@@ -171,9 +171,9 @@ void Simulation::run()
     this->readInitValueGrid(this->config->getFileInputValuePath());
 
     //TODO: foreach times (int time;) (t.kieu) -- done??
-    for(int time = 1; time <= 1; time++)
+    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
     {
-//        this->grid->generation();
+        this->grid->generation();
         string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
         this->writeValueGrid(file_output_name);
     }
