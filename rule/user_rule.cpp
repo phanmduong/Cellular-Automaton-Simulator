@@ -84,6 +84,7 @@ public:
     }
 };
 
+<<<<<<< HEAD
 class StarWars: public Rule
 {
     public:
@@ -109,9 +110,139 @@ class StarWars: public Rule
         }
     }
 } 
+=======
+
+
+class Bombers: public Rule {
+    // 345/24/25
+    // 8 neighbors
+
+    int RULE_SURVIVE[3] = {3,4,5};
+    int RUlE_BIRTH[2] = {2,4}; 
+    // birth: from state 0 to 1, needs 2 or 4 neighbour which are in state 1;
+
+    int calFiringNeighbors(vector<Cell*> neighbors) { 
+        //count number of neighbors that are in state 1
+        int count = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == 1) {
+                ++count;
+            }
+        }
+        return count;
+    }
+
+    int sameStateNeighbors(vector<Cell*> neighbors, int currentState) {
+        // count number of neighbors that are in the SAME STATE with current cell
+        int count = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == currentState) {
+                ++count;
+            }
+        }
+    }
+
+    public:
+        Bombers(): Rule((string) "Bombers") {}
+        ~Bombers() {}
+
+        virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+            const unsigned int RULE_GENS = states.size();
+            const State *state = cell->getState();
+            int currentState = stoi(state->getName());
+            
+            // for birth: 0 -> 1
+            if (currentState == 0) {
+                if (calFiringNeighbors(neighbors) == 2 || calFiringNeighbors(neighbors) == 4)
+                    return states[1];
+                return states[0];    
+            } 
+            else {
+                int n_sameNeighbors = sameStateNeighbors(neighbors, currentState);
+                if (n_sameNeighbors == 3 || n_sameNeighbors == 4 || n_sameNeighbors == 5)
+                    return states[currentState];
+                else {
+                    if (currentState == 24) return states[0];
+                    // 24 is the last state
+                    return states[currentState + 1];
+                }
+            }
+        }
+    };
+
+
+
+
+class SediMental: public Rule
+{
+public:
+    SediMental(): Rule((string) "SediMental"){
+    }
+    ~SediMental(){}
+
+    virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+        
+        
+        return states[1];
+    }
+};
+
+class Brain: public Rule
+{
+    int RULE_BIRTH[1]={2};
+    int calFiringNeighbors(vector<Cell*> neighbors){
+        int totalSum = 0;
+        for(unsigned i = 0; i < neighbors.size(); ++i){
+            if (stoi(neighbors[i]->getState()->getName()) == 1){// "firing" is 1
+                ++totalSum;
+            }
+        }
+        return totalSum;
+    }
+
+public:
+    Brain(): Rule((string) "Brian's Brain"){
+    }
+    ~Brain(){}
+
+    /*
+    Brian's Brain	/2/3
+    If we name the possible cell values based on a simplistic neural analogy,
+    viz. 0 = "ready", 1 = "firing", 2 = "refractory", then this simple rule 
+    can be stated thusly: Only a cell in the ready state may fire and it will 
+    only do so if exactly 2 of its neighbors are firing. After firing for one step, 
+    a cell spends a step in the refractory state before regaining readiness.
+    */
+
+    virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+
+        //For this rule: states[0]=0, states[1]=1, states[2]=2
+        if (currentState == 1)//current state is "firing"
+        {
+            return states[2];//next state is "refactory" without checking neighbor cells' state
+        }else if (currentState == 2)//current state is "refactory"
+        {
+            return states[0];//next state turns back to "ready" without checking neighbor cells' state
+        }else //current state is "ready"
+        {
+            //need to check condition to firing: exactly 2 of its neighbors are firing
+            if(calFiringNeighbors(neighbors)==2)
+                return states[1];//next state is "firing"
+        }
+        
+        return states[0];
+    }
+};
+
+>>>>>>> dev
 extern "C" void initRules(){
     registerRule(new ConwaysGameOfLife());
     registerRule(new GameOfLife2());
+    registerRule(new Bombers()); //t.kieu
 }
 
 extern "C" vector<Rule*> getAllRules(){

@@ -31,6 +31,7 @@ public:
     }
 };
 
+
 extern "C" void initRules(){
     registerRule(new GameOfLife());
     registerRule(new GameOfLife2());
