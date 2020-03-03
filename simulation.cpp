@@ -2,6 +2,7 @@
 #include "simulation.h"
 #include <iostream>
 #include <fstream>
+#include <QDebug>
 
 vector<Rule *> Simulation::getRules() const
 {
@@ -39,7 +40,7 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
 {
     //TODO: get NeighborPosition from neightborPostionText (t.kieu)
     // an exampple of neighorPositionText: 1 0\n0 -1\n2 3\n2 -1
-cout << neighborPostionText;
+
     vector<string> neighbor_list_str;
     vector<NeighborPosition *> neighbor_list; 
 
@@ -51,7 +52,6 @@ cout << neighborPostionText;
         neighborPostionText.erase(0, pos + detimiter.length());
     }
     neighbor_list_str.push_back(neighborPostionText);
-    
 
     for (unsigned int i = 0; i <= neighbor_list_str.size() - 1; i++) {
         int blank_position = neighbor_list_str[0].find(" ");
@@ -63,7 +63,7 @@ cout << neighborPostionText;
         int y = stoi(y_temp);
 
         NeighborPosition a(x, y);
-        neighbor_list.push_back(&a);        
+        neighbor_list.push_back(&a);
     } 
 
     return neighbor_list;
@@ -79,20 +79,25 @@ void Simulation::readInitValueGrid(const string path)
     std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
     exit(-1);
     }
+
 //    ifs>>m_width>>m_height;
 //    this->config->setWidth(m_width);
 //    this->config->setHeight(m_height);
+
     m_width = this->config->getWidth();
     m_height = this->config->getHeight();
     //read matrix from the input file and set the value to the grid
     int A[m_width][m_height];
     for (int i = 0; i <this->config->getWidth(); ++i)
     {
-        for (int j = 0; j < config->getHeight(); ++j)
+        for (int j = 0; j < this->config->getHeight(); ++j)
         {
             ifs >> A[i][j];
             State *state = this->states[A[i][j]];
-            this->grid->getCell(i,j)->setState(state);
+            if (this->grid->getCell(i,j) != nullptr){
+                this->grid->getCell(i,j)->setState(state);
+            }
+
         }
     }
     ifs.close();
@@ -110,8 +115,9 @@ void Simulation::writeValueGrid(const string path)
     {
         for (int j = 0; j < config->getHeight(); ++j)
         {
-            ofs << this->grid->getCell(i,j)->getState() << std::endl;
+            ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
         }
+        ofs << std::endl;
     }
 
 }
@@ -123,19 +129,19 @@ void Simulation::getRulesFromFile(string path)
     char path_arr[path.length()];
     strcpy(path_arr, path.c_str());
 
-    void* handle = dlopen(path_arr, RTLD_LAZY);
-    if (!handle) {
+    this->handleLibRule = dlopen(path_arr, RTLD_LAZY);
+    if (!this->handleLibRule) {
         fputs(dlerror(), stderr);
         exit(1);
     }
     typedef void (*rule_t)();
     typedef vector<Rule*> (*rule_t2)();
 
-    rule_t initRules = (rule_t) dlsym(handle, "initRules");
+    rule_t initRules = (rule_t) dlsym(this->handleLibRule, "initRules");
     initRules();
-    rule_t2 getAllRules = (rule_t2) dlsym(handle, "getAllRules");
+    rule_t2 getAllRules = (rule_t2) dlsym(this->handleLibRule, "getAllRules");
     this->rules = getAllRules();
-    dlclose(handle);
+//    dlclose(handle);
 }
 
 Simulation::Simulation(Configuration *config)
@@ -146,6 +152,7 @@ Simulation::Simulation(Configuration *config)
 Simulation::~Simulation()
 {
     // TODO: delete rules; (t.kieu) -- done
+    dlclose(this->handleLibRule);
     rules.erase(rules.begin(), rules.end());
 }
 
@@ -153,18 +160,17 @@ void Simulation::run()
 {
     this->states = this->createStates(this->config->getNumberOfState());
 
-    this->readInitValueGrid(this->config->getFileInputValuePath());
-
     Rule *rule =  this->getRuleWithRuleName(this->config->getRuleName());
     vector<NeighborPosition*> neighborPositions =  this->getNeighborPostions(this->config->getNeighborPostionText());
 
     this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
+    this->readInitValueGrid(this->config->getFileInputValuePath());
 //    //TODO: foreach times (int time;) (t.kieu) -- done??
-//    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
-//    {
-//        this->grid->generation();
-//        string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
-//        this->writeValueGrid(file_output_name);
-//    }
+    for(int time = 1; time <= this->config->getLimitGeneration(); time++)
+    {
+        this->grid->generation();
+        string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
+        this->writeValueGrid(file_output_name);
+    }
 }

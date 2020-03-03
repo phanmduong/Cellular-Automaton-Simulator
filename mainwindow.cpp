@@ -84,7 +84,7 @@ void MainWindow::on_rulesComboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_launchButton_clicked()
 {
-    this->simulation->run();
+     this->simulation->run();
 }
 
 void MainWindow::on_chooseFileRule_clicked()
