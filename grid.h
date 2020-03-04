@@ -37,6 +37,7 @@ public:
     void generation();
     int getWidth() const;
     int getHeight() const;
+    vector<State *> getStates() const;
 };
 
 #endif // GRID_H

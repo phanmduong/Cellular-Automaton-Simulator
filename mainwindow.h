@@ -58,6 +58,10 @@ private slots:
 
     void on_intervalTimeEdit_textChanged(const QString &arg1);
 
+    void on_diablog_result_close();
+
+    void on_pause_progress();
+
 signals:
     void start_simulation();
 

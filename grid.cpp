@@ -58,6 +58,11 @@ int Grid::getHeight() const
     return height;
 }
 
+vector<State *> Grid::getStates() const
+{
+    return states;
+}
+
 vector<Cell*> Grid::getNeighbors(const Cell *cell)
 {
     vector<Cell*> listNeighbors;

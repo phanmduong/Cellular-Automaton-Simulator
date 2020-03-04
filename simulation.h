@@ -20,6 +20,8 @@ class Simulation : public QObject
     vector<Rule *> rules;
     vector<State *> states;
     void* handleLibRule;
+    bool isStop;
+    bool isPause;
 
     vector<State *> createStates(int numberOfState);
 
@@ -43,16 +45,22 @@ public:
     void getRulesFromFile(string path);
 
     Grid *getGrid() const;
+    void quit();
 
+    void setIsPause(bool value);
+
+    bool getIsPause() const;
 
 signals:
     void progressChanged(float value);
     void startGeneration();
     void finished();
 
+
     // QThread interface
 public slots:
     void run();
+
 };
 
 #endif // SIMULATION_H
