@@ -13,21 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>591</width>
-     <height>451</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="layout">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetNoConstraint</enum>
-    </property>
-   </layout>
-  </widget>
  </widget>
  <resources/>
  <connections/>

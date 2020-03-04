@@ -14,12 +14,35 @@ vector<State *> Simulation::getStates() const
     return states;
 }
 
+Grid *Simulation::getGrid() const
+{
+    return grid;
+}
+
+string rgb2hex(int r, int g, int b, bool with_head)
+{
+  stringstream ss;
+  if (with_head)
+    ss << "#";
+  ss << std::hex << (r << 16 | g << 8 | b );
+  return ss.str();
+}
+
 vector<State *> Simulation::createStates(int numberOfState)
 {
     vector<State *> states;
+    int range = 0;
+    if (numberOfState - 1 <= 1){
+        range = 255;
+    } else{
+        range = (int) (255 / (numberOfState - 1));
+    }
+
     for(int i = 0; i < numberOfState; ++i) {
-         State *state = new State(to_string(i));
-         states.push_back(state);
+        int colorNumber = range * i;
+        string color = rgb2hex(colorNumber, colorNumber, colorNumber, true);
+        State *state = new State(to_string(i), color);
+        states.push_back(state);
     }
     return states;
 }
@@ -170,6 +193,8 @@ void Simulation::run()
 
     this->readInitValueGrid(this->config->getFileInputValuePath());
 
+    emit startGeneration();
+
     //TODO: foreach times (int time;) (t.kieu) -- done??
     for(int time = 1; time <= this->config->getLimitGeneration(); time++)
     {
@@ -177,6 +202,7 @@ void Simulation::run()
         string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
         this->writeValueGrid(file_output_name);
         emit progressChanged(time*100/this->config->getLimitGeneration());
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->config->getIntervalTime()));
     }
     emit finished();
 }

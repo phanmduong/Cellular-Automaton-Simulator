@@ -102,6 +102,16 @@ void Configuration::setDirectoryOutputValuePath(const string &value)
     directoryOutputValuePath = value;
 }
 
+int Configuration::getIntervalTime() const
+{
+    return intervalTime;
+}
+
+void Configuration::setIntervalTime(int value)
+{
+    intervalTime = value;
+}
+
 Configuration::Configuration()
 {
 
