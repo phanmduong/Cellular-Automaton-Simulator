@@ -30,6 +30,7 @@ string rgb2hex(int r, int g, int b, bool with_head)
 
 vector<State *> Simulation::createStates(int numberOfState)
 {
+    this->clearStates();
     vector<State *> states;
     int range = 0;
     if (numberOfState - 1 <= 1){
@@ -148,6 +149,19 @@ void Simulation::writeValueGrid(const string path)
 
 }
 
+void Simulation::clearRules()
+{
+    this->rules.clear();
+}
+
+void Simulation::clearStates()
+{
+    for(unsigned int i = 0; i < this->states.size(); ++i){
+        delete states[i];
+    }
+    this->states.clear();
+}
+
 Simulation::Simulation(Configuration *config)
 {
     this->config = config;
@@ -155,7 +169,7 @@ Simulation::Simulation(Configuration *config)
 
 void Simulation::getRulesFromFile(string path)
 {
-
+    this->clearRules();
     //TODO: get list rule in file .so (m.duong)
     char path_arr[path.length()];
     strcpy(path_arr, path.c_str());
