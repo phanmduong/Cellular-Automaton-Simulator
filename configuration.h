@@ -13,6 +13,7 @@ class Configuration
     string neighborPostionText;
     string ruleName;
     int limitGeneration;
+    int intervalTime;
 
     string fileRulePath =  "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/rule/rule.so";
     string fileInputValuePath = "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/initialize/input.txt";
@@ -46,6 +47,8 @@ public:
     void setFileRulePath(const string &value);
     void setFileInputValuePath(const string &value);
     void setDirectoryOutputValuePath(const string &value);
+    int getIntervalTime() const;
+    void setIntervalTime(int value);
 };
 
 #endif // CONFIGURATION_H

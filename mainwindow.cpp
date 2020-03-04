@@ -19,10 +19,11 @@ void MainWindow::getItemRule()
 
 void MainWindow::getInitialValue()
 {
-     this->config->setHeight(this->ui->heightEdit->text().toInt());
+    this->config->setHeight(this->ui->heightEdit->text().toInt());
     this->config->setWidth(this->ui->widthEdit->text().toInt());
     this->config->setNumberOfState(this->ui->numberOfStateEdit->text().toInt());
     this->config->setLimitGeneration(this->ui->limitGenerationEdit->text().toInt());
+    this->config->setIntervalTime(this->ui->intervalTimeEdit->text().toInt());
     this->config->setNeighborPostionText(this->ui->neighborsEdit->toPlainText().toStdString());
     this->config->setRuleName(this->ui->rulesComboBox->currentText().toStdString());
 }
@@ -42,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&this->simulationThread,&QThread::started, this, &MainWindow::on_started_simulation);
     connect(this, &MainWindow::start_simulation, this->simulation, &Simulation::run);
+    connect(this->simulation, &Simulation::startGeneration, this, &MainWindow::on_started_generation);
     connect(this->simulation, &Simulation::progressChanged, this, &MainWindow::on_progress_change);
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
 
@@ -126,21 +128,30 @@ void MainWindow::on_chooseDirOutput_clicked()
 
 void MainWindow::on_progress_change(float value)
 {
+    this->resultDialog->repaint();
     this->ui->progressBar->setValue((int) value);
 }
 
 void MainWindow::on_started_simulation()
 {
+    qDebug() << "start";
     this->disabledUI(true);
-    this->resultDialog->show();
     this->ui->progressBar->show();
 }
 
 void MainWindow::on_finished_simulation()
 {
+    qDebug() << "end";
     this->disabledUI(false);
     this->ui->progressBar->hide();
     this->simulationThread.quit();
+}
+
+void MainWindow::on_started_generation()
+{
+    qDebug() << "generation";
+    this->resultDialog->setGrid(this->simulation->getGrid());
+    this->resultDialog->show();
 }
 
 void MainWindow::disabledUI(bool value){
@@ -154,4 +165,10 @@ void MainWindow::disabledUI(bool value){
     this->ui->numberOfStateEdit->setDisabled(value);
     this->ui->neighborsEdit->setDisabled(value);
     this->ui->rulesComboBox->setDisabled(value);
+    this->ui->intervalTimeEdit->setDisabled(value);
+}
+
+void MainWindow::on_intervalTimeEdit_textChanged(const QString &arg1)
+{
+    this->config->setIntervalTime(arg1.toInt());
 }

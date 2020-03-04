@@ -54,6 +54,10 @@ private slots:
 
     void on_finished_simulation();
 
+    void on_started_generation();
+
+    void on_intervalTimeEdit_textChanged(const QString &arg1);
+
 signals:
     void start_simulation();
 
