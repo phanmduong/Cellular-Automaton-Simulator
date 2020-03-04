@@ -194,12 +194,12 @@ class ProbabilisticStarWar: public Rule {
         int neighborsOn = calNeighbors(neighbors);
         bool shouldBirth = ruleContains(neighborsOn, RULE_BIRTH);
         bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-        if (RULE_GENS <> 4) {
+        if (RULE_GENS != 4) {
             std::cerr<<"The number of state is not correct, it should be 4 ..."<<std::endl;
         exit(-1);
         } 
         if (shouldBirth || !shouldSurvive) {
-            if (currentState = 0) {
+            if (currentState == 0) {
                     double ran = dis(gen)/1000;
                     if (ran <= 0.5) {
                         indexNextState = currentState + 1;    
@@ -238,9 +238,6 @@ class ProbabilisticStarWar: public Rule {
 class Bombers: public Rule {
     // 345/24/25
     // 8 neighbors
-
-    int RULE_SURVIVE[3] = {3,4,5};
-    int RUlE_BIRTH[2] = {2,4}; 
     // birth: from state 0 to 1, needs 2 or 4 neighbour which are in state 1;
 
     int calFiringNeighbors(vector<Cell*> neighbors) { 
@@ -268,7 +265,7 @@ class Bombers: public Rule {
         Bombers(): Rule((string) "Bombers") {}
         ~Bombers() {}
 
-        State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
+        virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
             const unsigned int RULE_GENS = states.size();
             const State *state = cell->getState();
             int currentState = stoi(state->getName());
@@ -315,7 +312,7 @@ class Bloomerang: public Rule {
     }
 
     public:
-    Bloomerang(): Rule((string) "bombers") {}
+    Bloomerang(): Rule((string) "Bloomerang") {}
     ~Bloomerang() {}
 
     State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
