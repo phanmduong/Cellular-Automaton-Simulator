@@ -1,6 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 #include <string>
+#include <vector>
 #include "cell.h"
 
 using namespace std;

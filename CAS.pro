@@ -3,6 +3,7 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
+INCLUDEPATH += C:\Users\quyba\OneDrive\Documents\GitHub\Cellular-Automaton-Simulator
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -18,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     cell.cpp \
     configuration.cpp \
+    dlfcn.c \
     grid.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -29,6 +31,7 @@ SOURCES += \
 HEADERS += \
     cell.h \
     configuration.h \
+    dlfcn.h \
     grid.h \
     mainwindow.h \
     neighbor_position.h \
