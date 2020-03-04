@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     cell.cpp \
     configuration.cpp \
+    dialogresultgrid.cpp \
     grid.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 HEADERS += \
     cell.h \
     configuration.h \
+    dialogresultgrid.h \
     grid.h \
     mainwindow.h \
     neighbor_position.h \
@@ -37,6 +39,7 @@ HEADERS += \
     state.h
 
 FORMS += \
+    dialogresultgrid.ui \
     mainwindow.ui
 
 # Default rules for deployment.

@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->resultDialog = new DialogResultGrid();
     this->ui->progressBar->hide();
     this->config = new Configuration();
     this->simulation = new Simulation(this->config);
@@ -46,11 +47,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->getItemRule();
     this->getInitialValue();
-    qDebug() << QString::fromStdString(to_string(this->config->getWidth()));
-    qDebug() << QString::fromStdString(to_string(this->config->getHeight()));
-    qDebug() << QString::fromStdString(to_string(this->config->getNumberOfState()));
-    qDebug() << QString::fromStdString(to_string(this->config->getLimitGeneration()));
-    qDebug() << QString::fromStdString(this->config->getNeighborPostionText());
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +56,7 @@ MainWindow::~MainWindow()
     delete simulation;
     delete config;
     delete ui;
+    delete resultDialog;
 }
 
 void MainWindow::on_heightEdit_textChanged(const QString &arg1)
@@ -134,6 +131,7 @@ void MainWindow::on_progress_change(float value)
 void MainWindow::on_started_simulation()
 {
     this->disabledUI(true);
+    this->resultDialog->show();
     this->ui->progressBar->show();
 }
 
