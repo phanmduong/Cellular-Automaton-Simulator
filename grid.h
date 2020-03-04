@@ -35,6 +35,8 @@ public:
 
     // Generate all new state of each cell in grid at each generation and update for all cells
     void generation();
+    int getWidth() const;
+    int getHeight() const;
 };
 
 #endif // GRID_H

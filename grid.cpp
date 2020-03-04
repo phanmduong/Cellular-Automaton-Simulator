@@ -48,6 +48,16 @@ void Grid::generation()
 }
 
 /* Get list neighbor cells from given cell */
+int Grid::getWidth() const
+{
+    return width;
+}
+
+int Grid::getHeight() const
+{
+    return height;
+}
+
 vector<Cell*> Grid::getNeighbors(const Cell *cell)
 {
     vector<Cell*> listNeighbors;
