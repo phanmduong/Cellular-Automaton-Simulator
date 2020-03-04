@@ -29,29 +29,29 @@ Cell* Grid::getCell(int x, int y)
 }
 
 // Get specific cell with given coordinates from specific matrix
-Cell* Grid::getCellFromMatrix(int x, int y, vector<Cell*> vtCells)
+Cell* Grid::getCellFromMatrix(int x, int y, vector<Cell> *vtCells)
 {
     if (x<0 || x >= this->width) return nullptr;
     if (y<0 || y >= this->height) return nullptr;
 
     //else
-    return vtCells[y*this->width+x];
+    return &(*vtCells)[y*this->width+x];
 }
 
 /* Generate all new state of each cell in grid at each generation and update for all cells */
 void Grid::generation()
 {
-    vector<Cell*> cells;
+    vector<Cell> cells;
     for (unsigned i = 0; i < this->cells.size(); i++)
     {
-        Cell* cell(this->cells[i]);
+        Cell cell(this->cells[i]);
         cells.push_back(cell);
     }
 
     for (unsigned i = 0; i < cells.size(); i++)
     {
-        vector<Cell*> neighbors = this->getNeighbors(cells[i], cells);
-        State *state = this->rule->excuteRule(cells[i], neighbors, this->states);
+        vector<Cell*> neighbors = this->getNeighbors(&cells[i], &cells);
+        State *state = this->rule->excuteRule(&cells[i], neighbors, this->states);
 
         this->cells[i]->setState(state);
     }
@@ -73,7 +73,7 @@ vector<State *> Grid::getStates() const
     return states;
 }
 
-vector<Cell*> Grid::getNeighbors(const Cell *cell, vector<Cell*> cells)
+vector<Cell*> Grid::getNeighbors(const Cell *cell, vector<Cell> *cells)
 {
     vector<Cell*> listNeighbors;
 
@@ -81,7 +81,7 @@ vector<Cell*> Grid::getNeighbors(const Cell *cell, vector<Cell*> cells)
     {
         int x_neighbor = this->calculateCoordinates(cell->getX(), this->neighborPositions[i]->getX(), this->width);
         int y_neighbor = this->calculateCoordinates(cell->getY(), this->neighborPositions[i]->getY(), this->height);
-        Cell *tmp = getCellFromMatrix(x_neighbor,y_neighbor,cells);
+        Cell* tmp = getCellFromMatrix(x_neighbor,y_neighbor,cells);
         listNeighbors.push_back(tmp);
     }
 
