@@ -7,7 +7,9 @@
 #include <rule.h>
 #include <neighbor_position.h>
 #include <vector>
-#include "ui_mainwindow.h"
+#include <sstream>
+#include <chrono>
+#include <thread>
 #include <QObject>
 
 class Simulation : public QObject
@@ -36,8 +38,11 @@ public:
     vector<State *> getStates() const;
     void getRulesFromFile(string path);
 
+    Grid *getGrid() const;
+
 signals:
     void progressChanged(float value);
+    void startGeneration();
     void finished();
 
     // QThread interface
