@@ -19,11 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     cell.cpp \
     configuration.cpp \
-<<<<<<< HEAD
-    dlfcn.c \
-=======
+#    dlfcn.c \
     dialogresultgrid.cpp \
->>>>>>> dev
     grid.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -35,11 +32,8 @@ SOURCES += \
 HEADERS += \
     cell.h \
     configuration.h \
-<<<<<<< HEAD
-    dlfcn.h \
-=======
+#    dlfcn.h \
     dialogresultgrid.h \
->>>>>>> dev
     grid.h \
     mainwindow.h \
     neighbor_position.h \
