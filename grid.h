@@ -15,7 +15,7 @@ class Grid
     Rule *rule;
 
     // Get list neighbor cells of given cell
-    vector<Cell*> getNeighbors(Cell const *cell);
+    vector<Cell*> getNeighbors(Cell const *cell, vector<Cell*> cells);
 
     /* Initialize all cells of grid without state value */
     void createGridCells();
@@ -32,6 +32,9 @@ public:
 
     // Get specific cell with given coordinates
     Cell* getCell(int x, int y);
+
+    // Get specific cell with given coordinates from specific matrix
+    Cell* getCellFromMatrix(int x, int y, vector<Cell*> cells);
 
     // Generate all new state of each cell in grid at each generation and update for all cells
     void generation();
