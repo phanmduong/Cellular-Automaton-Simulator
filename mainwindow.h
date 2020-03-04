@@ -5,6 +5,7 @@
 #include <simulation.h>
 #include <configuration.h>
 #include <QThread>
+#include <dialogresultgrid.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -13,6 +14,8 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    DialogResultGrid *resultDialog;
     Simulation *simulation;
     Configuration *config;
     QThread simulationThread;
