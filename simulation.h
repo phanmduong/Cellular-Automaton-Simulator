@@ -29,6 +29,10 @@ class Simulation : public QObject
 
     void readInitValueGrid(string const path);
     void writeValueGrid(string const path);
+
+    void clearStates();
+    void clearRules();
+
 public:
     Simulation(Configuration *config);
 
@@ -39,6 +43,7 @@ public:
     void getRulesFromFile(string path);
 
     Grid *getGrid() const;
+
 
 signals:
     void progressChanged(float value);
