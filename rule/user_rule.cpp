@@ -48,42 +48,30 @@ public:
         int currentState = stoi(state->getName());
         int indexNextState = 0;
         if ( currentState == 0) {
-                    int neighborsOn = calNeighbors(neighbors);
-                       if (ruleContains(neighborsOn, RULE_BIRTH)){
-                           indexNextState = 1;
-                       }
-                   }
-                   else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
-                       int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
-                       bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-                       if (currentState == 1 && shouldSurvive)
-                       {
-                           indexNextState = currentState;
-                       }
-                       else if (!shouldSurvive) {
-                               indexNextState = (currentState + 1) % RULE_GENS;
-                       }
+        int neighborsOn = calNeighbors(neighbors);
+            if (ruleContains(neighborsOn, RULE_BIRTH)){
+                indexNextState = 1;
+            }
+        }
+        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+            int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
+            bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+            if (currentState == 1 && shouldSurvive)
+            {
+                indexNextState = currentState;
+            }
+            else if (!shouldSurvive) {
+                    indexNextState = (currentState + 1) % RULE_GENS;
+            }
 
-                       if ( currentState > 1)
-                           indexNextState = currentState + 1;
-                   }
-                   else if (currentState >= (RULE_GENS - 1)) {
-                       indexNextState = 0;
-                   }
+            if ( currentState > 1)
+                indexNextState = currentState + 1;
+        }
+        else if (currentState >= (RULE_GENS - 1)) {
+            indexNextState = 0;
+        }
 
         return states[indexNextState];
-    }
-};
-
-class GameOfLife2: public Rule
-{
-public:
-    GameOfLife2(): Rule((string) "Game of Life2"){
-    }
-    ~GameOfLife2(){}
-
-    State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
-        return states[1];
     }
 };
 
@@ -185,6 +173,7 @@ class ProbabilisticStarWar: public Rule {
         std::random_device rd;  //Will be used to obtain a seed for the random number engine
         std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
         std::uniform_int_distribution<> dis(1, 1000);
+        //assign state with the probabilistics
         //state 0: prob <= 0.5; state 1: prob <= 0.75; state 2: prob <=0.9; state 3: prob <=0.99
  
         const unsigned int RULE_GENS = states.size();
@@ -198,6 +187,11 @@ class ProbabilisticStarWar: public Rule {
             std::cerr<<"The number of state is not correct, it should be 4 ..."<<std::endl;
         exit(-1);
         } 
+        //check wether the state satisfies the rules
+        //345/2/4
+        //if cell's state = i (i: 0 to 4) and neighboring states have 3 or 4 or 5 one that the same as the cell then the the cell changes state
+        //otherwise it keep the state as origin
+        //if two neighboring states are different from the cell/s state then the cell's state is not changed, otherwise it keeps the original state 
         if (shouldBirth || !shouldSurvive) {
             if (currentState == 0) {
                     double ran = dis(gen)/1000;
@@ -413,12 +407,13 @@ public:
 };
 
 extern "C" void initRules(){
-    registerRule(new ConwaysGameOfLife());
-    registerRule(new GameOfLife2());
+    rules.clear();
+    registerRule(new ConwaysGameOfLife());//DuongPM
     registerRule(new Bombers()); //t.kieu
     registerRule(new Bloomerang()); //t.kieu
-    registerRule(new Brain());
-
+    registerRule(new Brain());//DuongHIV
+    registerRule(new StarWars());//BanTQ
+    registerRule(new ProbabilisticStarWar());//BanTQ
 }
 
 extern "C" vector<Rule*> getAllRules(){
