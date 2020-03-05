@@ -310,7 +310,6 @@ class Bloomerang: public Rule {
                 ++count;
             }
         }
-    }
 
     public:
     Bloomerang(): Rule((string) "Bloomerang") {}
