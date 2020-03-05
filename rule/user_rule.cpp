@@ -467,6 +467,7 @@ extern "C" void initRules(){
     registerRule(new Brain());//DuongHIV
     registerRule(new StarWars());//BanTQ
     registerRule(new ProbabilisticStarWar());//BanTQ
+    registerRule(new SediMental());//BanTQ
 }
 
 extern "C" vector<Rule*> getAllRules(){
