@@ -347,18 +347,64 @@ class Bloomerang: public Rule {
 
 
 
-
+//BanTQ - 3/5/2020
 class SediMental: public Rule
 {
 public:
+    int RULE_SURVIVE[5]={4,5,6,7,8};
+     int RULE_BIRTH[5]={2,5,6,7,8};
+
+    int sizeSurvive = (sizeof(RULE_SURVIVE)/sizeof(*RULE_SURVIVE));
+    int sizeBirth = (sizeof(RULE_BIRTH)/sizeof(*RULE_BIRTH));
+
+    int calNeighbors(vector<Cell*> neighbors){
+        int totalSum = 0;
+        for(unsigned i = 0; i < neighbors.size(); ++i){
+            if (stoi(neighbors[i]->getState()->getName()) == 1){
+                ++totalSum;
+            }
+        }
+        return totalSum;
+    }
+    bool ruleContains(int n, int rule[]) {
+        int size = (sizeof(rule)/sizeof(*rule));
+        for(int i=0; i < size; i++) {
+            if ( rule[i] == n )
+                return true;
+        }
+        return false;
+    }
     SediMental(): Rule((string) "SediMental"){
     }
     ~SediMental(){}
 
     virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states){
-        
-        
-        return states[1];
+        const unsigned int RULE_GENS = states.size();
+        const State *state = cell->getState();
+        int currentState = stoi(state->getName());
+        int indexNextState;
+        if ( currentState == 0) {
+        int neighborsOn = calNeighbors(neighbors);
+            if (ruleContains(neighborsOn, RULE_BIRTH)){                
+                indexNextState = currentState + 1;
+            }
+        }
+        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+            int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
+            bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
+            if (shouldSurvive)
+            {
+                indexNextState = currentState + 1;
+                if (currentState >= (RULE_GENS - 1)) {
+                indexNextState = 1;
+                }
+            }
+            else {               
+            indexNextState = 0;
+            }
+        }       
+        return states[indexNextState];        
+    
     }
 };
 
