@@ -4,9 +4,11 @@
 #include <rule.h>
 #include <neighbor_position.h>
 #include <vector>
+#include <QObject>
 
-class Grid
+class Grid: public QObject
 {
+    Q_OBJECT
     int width;
     int height;
     vector<Cell*> cells;
@@ -41,6 +43,10 @@ public:
     int getWidth() const;
     int getHeight() const;
     vector<State *> getStates() const;
+
+signals:
+    void rule_error(QString message);
+
 };
 
 #endif // GRID_H

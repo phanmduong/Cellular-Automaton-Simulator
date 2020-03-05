@@ -51,7 +51,22 @@ void Grid::generation()
     for (unsigned i = 0; i < cells.size(); i++)
     {
         vector<Cell*> neighbors = this->getNeighbors(&cells[i], &cells);
-        State *state = this->rule->excuteRule(&cells[i], neighbors, this->states);
+        State *state;
+        try {
+            state = this->rule->excuteRule(&cells[i], neighbors, this->states);
+        } catch(...)
+        {
+            emit this->rule_error("Rule run error");
+
+            return;
+        }
+
+        if (state == nullptr){
+            qDebug() << "Not found state";
+            emit this->rule_error("Not found state");
+            return;
+        }
+
 
         this->cells[i]->setState(state);
     }
