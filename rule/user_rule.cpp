@@ -114,26 +114,26 @@ class StarWars: public Rule
         int indexNextState;
         if ( currentState == 0) {
         int neighborsOn = calNeighbors(neighbors);
-            if (ruleContains(neighborsOn, RULE_BIRTH)){                
-                indexNextState = currentState + 1;
+            if (ruleContains(neighborsOn, RULE_BIRTH)) {
+                indexNextState = 1;
             }
         }
         else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
             int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
             bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-            if (shouldSurvive)
+            if ((currentState == 1 || currentState == 2 || currentState == 3) && shouldSurvive)
             {
-                indexNextState = (currentState + 1) % RULE_GENS; //to avoid the sate is increased infinity
-                if (currentState >= (RULE_GENS - 1)) {
-                indexNextState = 1;
-                }
+                indexNextState = currentState;
             }
-            else {               
+            else if (!shouldSurvive) 
+            {
+                    indexNextState = (currentState + 1) % RULE_GENS;
+            }
+                  
+        else if (currentState >= (RULE_GENS - 1)) {
             indexNextState = 0;
-            }
-        }       
-        return states[indexNextState];
-    }
+        }
+    }    
 }; 
 
 //BanTQ - Probability rules
@@ -206,31 +206,45 @@ class ProbabilisticStarWar: public Rule {
             {
                 if (currentState == 1) {                    
                     if (ran > 0.5 && ran <=0.75) {
+                        indexNextState = currentState;    
+                    } else {
+                        indexNextState = currentState + 1; 
+                    } 
+                } else if (currentState == 2)   {        
+                    if (ran > 0.75 && ran <=0.9) {
+                        indexNextState = currentState;    
+                    } else {
+                        indexNextState = currentState + 1; 
+                    }   
+                } else if (currentState == 3) {
+                        if (ran > 0.9 && ran <= 0.99) {
+                            indexNextState = currentState;   
+                        } else {
+                            indexNextState = 1; 
+                        }   
+                      }
+            }
+            else if (!shouldSurvive) {               
+                    if (currentState == 1) {                    
+                    if (ran > 0.5 && ran <=0.75) {
                         indexNextState = currentState + 1;    
                     } else {
-                        indexNextState = currentState; 
+                        indexNextState = 0; 
                     } 
                 } else if (currentState == 2)   {        
                     if (ran > 0.75 && ran <=0.9) {
                         indexNextState = currentState + 1;    
                     } else {
-                        indexNextState = currentState; 
+                        indexNextState = 0; 
                     }   
-                } else if (currentState >= (RULE_GENS - 1)) {
+                } else if (currentState == 3) {
                         if (ran > 0.9 && ran <= 0.99) {
                             indexNextState = 1;    
                         } else {
-                            indexNextState = currentState; 
+                            indexNextState = 0; 
                         }   
-                      }
-            }
-            else {               
-                    if (ran <= 0.5) {
-                        indexNextState = 0;    
-                    } else {
-                        indexNextState = currentState; 
-                    }   
-            }
+                }
+            
         }         
         return states[indexNextState];
     }
@@ -383,26 +397,28 @@ public:
         const State *state = cell->getState();
         int currentState = stoi(state->getName());
         int indexNextState;
-        if ( currentState == 0) {
+         if ( currentState == 0) {
         int neighborsOn = calNeighbors(neighbors);
-            if (ruleContains(neighborsOn, RULE_BIRTH)){                
-                indexNextState = currentState + 1;
+            if (ruleContains(neighborsOn, RULE_BIRTH)) {
+                indexNextState = 1;
             }
         }
         else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
             int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
             bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-            if (shouldSurvive)
+            if ((currentState == 1 || currentState == 2 || currentState == 3) && shouldSurvive)
             {
-                indexNextState = (currentState + 1) % RULE_GENS;
-                if (currentState >= (RULE_GENS - 1)) {
-                indexNextState = 1;
-                }
+                indexNextState = currentState;
             }
-            else {               
+            else if (!shouldSurvive) 
+            {
+                    indexNextState = (currentState + 1) % RULE_GENS;
+            }
+                  
+        else if (currentState >= (RULE_GENS - 1)) {
             indexNextState = 0;
             }
-        }       
+         }        
         return states[indexNextState];        
     
     }
