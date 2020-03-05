@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     cell.cpp \
     configuration.cpp \
-    dlfcn.c \
+#    dlfcn.c \
     dialogresultgrid.cpp \
     grid.cpp \
     main.cpp \
@@ -32,7 +32,7 @@ SOURCES += \
 HEADERS += \
     cell.h \
     configuration.h \
-    dlfcn.h \
+#    dlfcn.h \
     dialogresultgrid.h \
     grid.h \
     mainwindow.h \

@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
     connect(this->resultDialog, &DialogResultGrid::finished, this, &MainWindow::on_diablog_result_close);
     connect(this->resultDialog, &DialogResultGrid::pause_simulation, this, &MainWindow::on_pause_progress);
-    this->getItemRule();
+//    this->getItemRule();
 
     this->getInitialValue();
 }
