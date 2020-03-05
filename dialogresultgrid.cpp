@@ -59,12 +59,14 @@ void DialogResultGrid::hideProgress()
 {
     this->ui->progressBar->hide();
     this->ui->pauseButton->hide();
+    this->ui->closeButton->setText("Close");
 }
 
 void DialogResultGrid::showProgress()
 {
      this->ui->progressBar->show();
      this->ui->pauseButton->show();
+     this->ui->closeButton->setText("Stop");
 }
 
 DialogResultGrid::DialogResultGrid(QWidget *parent) :
