@@ -118,12 +118,12 @@ class StarWars: public Rule
                 indexNextState = currentState + 1;
             }
         }
-        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
             int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
             bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
             if (shouldSurvive)
             {
-                indexNextState = currentState + 1;
+                indexNextState = (currentState + 1) % RULE_GENS; //to avoid the sate is increased infinity
                 if (currentState >= (RULE_GENS - 1)) {
                 indexNextState = 1;
                 }
@@ -199,7 +199,7 @@ class ProbabilisticStarWar: public Rule {
                     }                  
             }
         }
-        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
             int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
             bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
             if (shouldSurvive)
@@ -216,7 +216,7 @@ class ProbabilisticStarWar: public Rule {
                     } else {
                         indexNextState = currentState; 
                     }   
-                    } else if(currentState >= (RULE_GENS - 1)) {
+                } else if (currentState >= (RULE_GENS - 1)) {
                         if (ran > 0.9 && ran <= 0.99) {
                             indexNextState = 1;    
                         } else {
@@ -389,12 +389,12 @@ public:
                 indexNextState = currentState + 1;
             }
         }
-        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 2) ) {
+        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
             int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
             bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
             if (shouldSurvive)
             {
-                indexNextState = currentState + 1;
+                indexNextState = (currentState + 1) % RULE_GENS;
                 if (currentState >= (RULE_GENS - 1)) {
                 indexNextState = 1;
                 }
