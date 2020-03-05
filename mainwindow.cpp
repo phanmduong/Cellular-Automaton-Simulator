@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->size());
     this->resultDialog = new DialogResultGrid();
-    this->ui->progressBar->hide();
     this->config = new Configuration();
     this->simulation = new Simulation(this->config);
 
@@ -46,8 +46,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->simulation, &Simulation::startGeneration, this, &MainWindow::on_started_generation);
     connect(this->simulation, &Simulation::progressChanged, this, &MainWindow::on_progress_change);
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
+    connect(this->resultDialog, &DialogResultGrid::finished, this, &MainWindow::on_diablog_result_close);
+    connect(this->resultDialog, &DialogResultGrid::pause_simulation, this, &MainWindow::on_pause_progress);
 
-    // this->getItemRule();
+//    this->getItemRule();
 
     this->getInitialValue();
 }
@@ -129,22 +131,22 @@ void MainWindow::on_chooseDirOutput_clicked()
 void MainWindow::on_progress_change(float value)
 {
     this->resultDialog->repaint();
-    this->ui->progressBar->setValue((int) value);
+    this->resultDialog->updateProgress(value);
 }
 
 void MainWindow::on_started_simulation()
 {
     qDebug() << "start";
     this->disabledUI(true);
-    this->ui->progressBar->show();
+    this->hide();
 }
 
 void MainWindow::on_finished_simulation()
 {
     qDebug() << "end";
     this->disabledUI(false);
-    this->ui->progressBar->hide();
     this->simulationThread.quit();
+    this->resultDialog->hideProgress();
 }
 
 void MainWindow::on_started_generation()
@@ -152,6 +154,7 @@ void MainWindow::on_started_generation()
     qDebug() << "generation";
     this->resultDialog->setGrid(this->simulation->getGrid());
     this->resultDialog->show();
+    this->resultDialog->showProgress();
 }
 
 void MainWindow::disabledUI(bool value){
@@ -171,4 +174,22 @@ void MainWindow::disabledUI(bool value){
 void MainWindow::on_intervalTimeEdit_textChanged(const QString &arg1)
 {
     this->config->setIntervalTime(arg1.toInt());
+}
+
+void MainWindow::on_diablog_result_close()
+{
+    this->show();
+    this->simulation->quit();
+    this->simulationThread.quit();
+    this->simulationThread.wait();
+}
+
+void MainWindow::on_pause_progress()
+{
+    if (this->simulation->getIsPause() == true){
+        this->simulation->setIsPause(false);
+    } else {
+        this->simulation->setIsPause(true);
+        }
+
 }

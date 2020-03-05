@@ -28,6 +28,16 @@ string rgb2hex(int r, int g, int b, bool with_head)
   return ss.str();
 }
 
+void Simulation::setIsPause(bool value)
+{
+    isPause = value;
+}
+
+bool Simulation::getIsPause() const
+{
+    return isPause;
+}
+
 vector<State *> Simulation::createStates(int numberOfState)
 {
     this->clearStates();
@@ -195,6 +205,8 @@ Simulation::~Simulation()
 
 void Simulation::run()
 {
+    this->isStop = false;
+    this->isPause = false;
     this->states = this->createStates(this->config->getNumberOfState());
 
     Rule *rule =  this->getRuleWithRuleName(this->config->getRuleName());
@@ -209,6 +221,14 @@ void Simulation::run()
     //TODO: foreach times (int time;) (t.kieu) -- done??
     for(int time = 1; time <= this->config->getLimitGeneration(); time++)
     {
+        if (this->isStop) break;
+        while(this->isPause){
+            if (this->isStop){
+                emit finished();
+                return;
+            }
+        }
+
         this->grid->generation();
         string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
         this->writeValueGrid(file_output_name);
@@ -216,4 +236,9 @@ void Simulation::run()
         std::this_thread::sleep_for(std::chrono::milliseconds(this->config->getIntervalTime()));
     }
     emit finished();
+}
+
+void Simulation::quit()
+{
+    this->isStop = true;
 }

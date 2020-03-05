@@ -11,22 +11,51 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Result Simulation</string>
   </property>
-  <widget class="QProgressBar" name="progressBar">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>290</y>
-     <width>118</width>
-     <height>23</height>
+     <x>130</x>
+     <y>90</y>
+     <width>160</width>
+     <height>105</height>
     </rect>
    </property>
-   <property name="value">
-    <number>24</number>
-   </property>
+   <layout class="QVBoxLayout" name="layoutProgress">
+    <item>
+     <layout class="QVBoxLayout" name="layoutStates"/>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pauseButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Pause</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="closeButton">
+      <property name="text">
+       <string>Stop</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
  <connections/>
+ <slots>
+  <signal>pause_simulation()</signal>
+ </slots>
 </ui>
