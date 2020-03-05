@@ -223,11 +223,13 @@ void Simulation::run()
     {
         if (this->isStop) break;
         while(this->isPause){
+            qDebug() << "pause";
             if (this->isStop){
                 emit finished();
                 return;
             }
         }
+
 
         this->grid->generation();
         string file_output_name = this->config->getDirectoryOutputValuePath() + "/" + to_string(time) + ".txt";
