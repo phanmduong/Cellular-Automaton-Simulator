@@ -20,9 +20,6 @@ void MainWindow::getItemRule()
 
 void MainWindow::getInitialValue()
 {
-    this->config->setHeight(this->ui->heightEdit->text().toInt());
-    this->config->setWidth(this->ui->widthEdit->text().toInt());
-    this->config->setNumberOfState(this->ui->numberOfStateEdit->text().toInt());
     this->config->setLimitGeneration(this->ui->limitGenerationEdit->text().toInt());
     this->config->setIntervalTime(this->ui->intervalTimeEdit->text().toInt());
     this->config->setNeighborPostionText(this->ui->neighborsEdit->toPlainText().toStdString());
@@ -64,21 +61,6 @@ MainWindow::~MainWindow()
     delete resultDialog;
 }
 
-void MainWindow::on_heightEdit_textChanged(const QString &arg1)
-{
-    this->config->setHeight(arg1.toInt());
-}
-
-void MainWindow::on_widthEdit_textChanged(const QString &arg1)
-{
-     this->config->setWidth(arg1.toInt());
-}
-
-void MainWindow::on_numberOfStateEdit_textChanged(const QString &arg1)
-{
-    this->config->setNumberOfState(arg1.toInt());
-}
-
 void MainWindow::on_limitGenerationEdit_textChanged(const QString &arg1)
 {
      this->config->setLimitGeneration(arg1.toInt());
@@ -107,6 +89,7 @@ void MainWindow::on_chooseFileRule_clicked()
     this->ui->ruleFilePathEdit->setText(file_name);
 
     this->config->setFileRulePath(file_name.toStdString());
+    if (file_name == "") return;
     this->getItemRule();
 }
 
@@ -117,6 +100,10 @@ void MainWindow::on_chooseFileInput_clicked()
     this->ui->inputFilePathEdit->setText(file_name);
 
     this->config->setFileInputValuePath(file_name.toStdString());
+
+    if (file_name == "") return;
+
+    this->config->getConfigFromFile(file_name.toStdString());
 }
 
 void MainWindow::on_chooseDirOutput_clicked()
@@ -165,10 +152,7 @@ void MainWindow::disabledUI(bool value){
     this->ui->chooseFileInput->setDisabled(value);
     this->ui->chooseDirOutput->setDisabled(value);
     this->ui->chooseFileRule->setDisabled(value);
-    this->ui->heightEdit->setDisabled(value);
-    this->ui->widthEdit->setDisabled(value);
     this->ui->limitGenerationEdit->setDisabled(value);
-    this->ui->numberOfStateEdit->setDisabled(value);
     this->ui->neighborsEdit->setDisabled(value);
     this->ui->rulesComboBox->setDisabled(value);
     this->ui->intervalTimeEdit->setDisabled(value);

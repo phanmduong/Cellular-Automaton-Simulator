@@ -7,6 +7,7 @@
 #include <QThread>
 #include <dialogresultgrid.h>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -28,12 +29,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_heightEdit_textChanged(const QString &arg1);
-
-    void on_widthEdit_textChanged(const QString &arg1);
-
-    void on_numberOfStateEdit_textChanged(const QString &arg1);
-
     void on_limitGenerationEdit_textChanged(const QString &arg1);
 
     void on_neighborsEdit_textChanged();

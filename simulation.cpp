@@ -110,27 +110,26 @@ vector<NeighborPosition *> Simulation::getNeighborPostions(string neighborPostio
 //BanTQ - 3/1/2020 - read the initialized values for the simulator from the configuration
 void Simulation::readInitValueGrid(const string path)
 {
-    unsigned m_width;
-    unsigned m_height;
+    int m_width;
+    int m_height;
+    int number_of_state;
     std::ifstream ifs(path);
     if( !ifs.is_open() ) {
         std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
         exit(-1);
     }
 
-//    ifs>>m_width>>m_height;
-//    this->config->setWidth(m_width);
-//    this->config->setHeight(m_height);
+    ifs>>m_width>>m_height>>number_of_state;
 
     m_width = this->config->getWidth();
     m_height = this->config->getHeight();
     //read matrix from the input file and set the value to the grid
-    int A[m_width][m_height];
+    int stateName;
     for (int j = 0; j < this->config->getHeight(); ++j){
     for (int i = 0; i <this->config->getWidth(); ++i)
         {
-            ifs >> A[i][j];
-            State *state = this->states[A[i][j]];
+            ifs >> stateName;
+            State *state = this->states[stateName];
             if (this->grid->getCell(i,j) != nullptr){
                 this->grid->getCell(i,j)->setState(state);
             }
@@ -184,7 +183,6 @@ void Simulation::getRulesFromFile(string path)
     this->handleLibRule = dlopen(path_arr, RTLD_LAZY);
     if (!this->handleLibRule) {
         fputs(dlerror(), stderr);
-        exit(1);
     }
     typedef void (*rule_t)();
     typedef vector<Rule*> (*rule_t2)();

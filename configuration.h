@@ -49,6 +49,8 @@ public:
     void setDirectoryOutputValuePath(const string &value);
     int getIntervalTime() const;
     void setIntervalTime(int value);
+
+    void getConfigFromFile(string path);
 };
 
 #endif // CONFIGURATION_H
