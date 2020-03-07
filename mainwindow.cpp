@@ -199,7 +199,7 @@ void MainWindow::on_started_simulation()
 {
     qDebug() << "start";
     this->disabledUI(true);
-//    this->hide();
+    this->hide();
 }
 
 void MainWindow::on_finished_simulation()
