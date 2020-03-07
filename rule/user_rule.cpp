@@ -2,7 +2,7 @@
 #include <vector>
 #include <random>
 #include <iostream>
-
+std::random_device rd;
 
 vector<Rule*> rules;
 
@@ -75,7 +75,7 @@ public:
     }
 };
 
-//BanTQ - Star War 234/2/4
+//BanTQ - Star War 345/2/4
 class StarWars: public Rule
 {
     public:
@@ -102,6 +102,17 @@ class StarWars: public Rule
         }
         return false;
     }
+
+    int sameStateNeighbors(vector<Cell*> neighbors, int currentState) {
+        // count number of neighbors that are in the SAME STATE with current cell
+        int count = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == currentState) {
+                ++count;
+            }
+        }
+        return count;
+    }
     
     StarWars(): Rule((string) "Star Wars") {
 
@@ -111,28 +122,23 @@ class StarWars: public Rule
         const unsigned int RULE_GENS = states.size();
         const State *state = cell->getState();
         int currentState = stoi(state->getName());
-        int indexNextState;
-        if ( currentState == 0) {
-        int neighborsOn = calNeighbors(neighbors);
-            if (ruleContains(neighborsOn, RULE_BIRTH)) {
-                indexNextState = 1;
-            }
-        }
-        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
-            int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
-            bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-            if ((currentState == 1 || currentState == 2 || currentState == 3) && shouldSurvive)
-            {
-                indexNextState = currentState;
-            }
-            else if (!shouldSurvive) 
-            {
-                    indexNextState = (currentState + 1) % RULE_GENS;
-            }
-                  
-        else if (currentState >= (RULE_GENS - 1)) {
-            indexNextState = 0;
-        }
+        
+        // for birth: 0 -> 2
+        //for survive: 1 -> 3, 4, 5
+            if (currentState == 0) {
+                if (calNeighbors(neighbors) == 2)
+                    return states[1];
+                return states[0];    
+            } 
+            else {
+                int n_sameNeighbors = sameStateNeighbors(neighbors, currentState);
+                if (n_sameNeighbors == 3 || n_sameNeighbors == 4 || n_sameNeighbors == 5)
+                    return states[currentState];
+                else {
+                    if (currentState == RULE_GENS - 1) return states[0];
+                    return states[currentState + 1];
+                }
+            }        
     }    
 }; 
 
@@ -162,6 +168,17 @@ class ProbabilisticStarWar: public Rule {
         }
         return false;
     }
+
+    int sameStateNeighbors(vector<Cell*> neighbors, int currentState) {
+        // count number of neighbors that are in the SAME STATE with current cell
+        int count = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == currentState) {
+                ++count;
+            }
+        }
+        return count;
+    }
     
     ProbabilisticStarWar(): Rule((string) "Probabilistic Star Wars") {
 
@@ -169,7 +186,7 @@ class ProbabilisticStarWar: public Rule {
     ~ProbabilisticStarWar() {}
     virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
         //Generate the random value
-        std::random_device rd;  //Will be used to obtain a seed for the random number engine
+          //Will be used to obtain a seed for the random number engine
         std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
         std::uniform_int_distribution<> dis(1, 1000);
         //assign state with the probabilistics
@@ -178,7 +195,6 @@ class ProbabilisticStarWar: public Rule {
         const unsigned int RULE_GENS = states.size();
         const State *state = cell->getState();
         int currentState = stoi(state->getName());
-        int indexNextState;
         double ran = dis(gen)/1000;
         //if (RULE_GENS != 4) {
         //     std::cerr<<"The number of state is not correct, it should be 4 ..."<<std::endl;
@@ -189,65 +205,39 @@ class ProbabilisticStarWar: public Rule {
         //if cell's state = i (i: 0 to 4) and neighboring states have 3 or 4 or 5 one that the same as the cell then the the cell changes state
         //otherwise it keep the state as origin
         //if two neighboring states are different from the cell/s state then the cell's state is not changed, otherwise it keeps the original state 
-        if ( currentState == 0) {        
-        int neighborsOn = calNeighbors(neighbors);
-            if (ruleContains(neighborsOn, RULE_BIRTH)){                
-                if (ran <= 0.5) {
-                        indexNextState = currentState + 1;    
-                    } else {
-                        indexNextState = currentState; 
-                    }                  
-            }
-        }
-        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
-            int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
-            bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-            if (shouldSurvive)
-            {
-                if (currentState == 1) {                    
-                    if (ran > 0.5 && ran <=0.75) {
-                        indexNextState = currentState;    
-                    } else {
-                        indexNextState = currentState + 1; 
-                    } 
-                } else if (currentState == 2)   {        
-                    if (ran > 0.75 && ran <=0.9) {
-                        indexNextState = currentState;    
-                    } else {
-                        indexNextState = currentState + 1; 
+        if (currentState == 0) {
+                if (calNeighbors(neighbors) == 2)
+                    if (ran <= 0.5) {
+                        return states[0]; 
+                    } else if (ran > 0.5 && ran <= 0.75) {
+                        return states[1];
+                    } else if (ran > 0.75 && ran <= 0.9) {
+                        return states[2];
+                    } else if (ran > 0.9 && ran <= 1)  {
+                        return states[3];
                     }   
-                } else if (currentState == 3) {
-                        if (ran > 0.9 && ran <= 0.99) {
-                            indexNextState = currentState;   
-                        } else {
-                            indexNextState = 1; 
-                        }   
-                      }
-            }
-            else if (!shouldSurvive) {               
-                    if (currentState == 1) {                    
-                    if (ran > 0.5 && ran <=0.75) {
-                        indexNextState = currentState + 1;    
-                    } else {
-                        indexNextState = 0; 
+                return states[0];    
+            } 
+            else {
+                int n_sameNeighbors = sameStateNeighbors(neighbors, currentState);
+                if (n_sameNeighbors == 3 || n_sameNeighbors == 4 || n_sameNeighbors == 5) {
+                    if (ran <= 0.5) {
+                        return states[currentState]; 
+                    } else if (ran > 0.5 && ran <= 0.75) {
+                        return states[1];
+                    } else if (ran > 0.75 && ran <= 0.9) {
+                        return states[2];
+                    } else if (ran > 0.9 && ran <= 1)  {
+                        return states[3];
                     } 
-                } else if (currentState == 2)   {        
-                    if (ran > 0.75 && ran <=0.9) {
-                        indexNextState = currentState + 1;    
-                    } else {
-                        indexNextState = 0; 
-                    }   
-                } else if (currentState == 3) {
-                        if (ran > 0.9 && ran <= 0.99) {
-                            indexNextState = 1;    
-                        } else {
-                            indexNextState = 0; 
-                        }   
+                }      
+                else {
+                    if (currentState == RULE_GENS - 1) return states[0];
+                    return states[(currentState + 1) % RULE_GENS];
                 }
-            
-        }         
-        return states[indexNextState];
+            }  
     }
+    
 };
 
 class Bombers: public Rule {
@@ -274,6 +264,7 @@ class Bombers: public Rule {
                 ++count;
             }
         }
+        return count;//BanTQ updated
     }
 
     public:
@@ -388,6 +379,17 @@ public:
         }
         return false;
     }
+
+    int sameStateNeighbors(vector<Cell*> neighbors, int currentState) {
+        // count number of neighbors that are in the SAME STATE with current cell
+        int count = 0;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (stoi(neighbors[i]->getState()->getName()) == currentState) {
+                ++count;
+            }
+        }
+        return count;//BanTQ updated
+    }
     SediMental(): Rule((string) "SediMental"){
     }
     ~SediMental(){}
@@ -396,31 +398,25 @@ public:
         const unsigned int RULE_GENS = states.size();
         const State *state = cell->getState();
         int currentState = stoi(state->getName());
-        int indexNextState;
-         if ( currentState == 0) {
-        int neighborsOn = calNeighbors(neighbors);
-            if (ruleContains(neighborsOn, RULE_BIRTH)) {
-                indexNextState = 1;
-            }
-        }
-        else if ( currentState > 0 && (currentState < (RULE_GENS - 1) || RULE_GENS == 4) ) {
-            int neighborsOn = (sizeSurvive == 0) ? 0 : calNeighbors(neighbors);
-            bool shouldSurvive = ruleContains(neighborsOn, RULE_SURVIVE);
-            if ((currentState == 1 || currentState == 2 || currentState == 3) && shouldSurvive)
-            {
-                indexNextState = currentState;
-            }
-            else if (!shouldSurvive) 
-            {
-                    indexNextState = (currentState + 1) % RULE_GENS;
-            }
-                  
-        else if (currentState >= (RULE_GENS - 1)) {
-            indexNextState = 0;
-            }
-         }        
-        return states[indexNextState];        
-    
+        
+        // for birth: 0 -> 2, 5, 6, 7, 8
+        //for survive: 1 -> 4, 5, 6, 7, 8
+            if (currentState == 0) {
+                if (calNeighbors(neighbors) == 2|| calNeighbors(neighbors) == 5 || 
+                calNeighbors(neighbors) == 6|| calNeighbors(neighbors) == 7||calNeighbors(neighbors) == 8)
+                    return states[1];
+                return states[0];    
+            } 
+            else {
+                int n_sameNeighbors = sameStateNeighbors(neighbors, currentState);
+                if (n_sameNeighbors == 4 || n_sameNeighbors == 5 || n_sameNeighbors == 6
+                    || n_sameNeighbors == 7 || n_sameNeighbors == 8)
+                    return states[currentState];
+                else {
+                    if (currentState == RULE_GENS - 1) return states[0];
+                    return states[(currentState + 1) % RULE_GENS];
+                }
+            }       
     }
 };
 
