@@ -44,7 +44,6 @@ void DialogResultGrid::paintEvent(QPaintEvent *event)
                 }
         }
     }
-
 }
 
 void DialogResultGrid::repaint()

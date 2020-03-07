@@ -26,6 +26,23 @@ void MainWindow::getInitialValue()
     this->config->setRuleName(this->ui->rulesComboBox->currentText().toStdString());
 }
 
+bool MainWindow::validateForm()
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Error");
+
+    if (this->config->getWidth() <= 0){
+
+        msgBox.setText("Width invalid");
+        msgBox.exec();
+        return false;
+    }
+
+    //TODO: ....
+
+    return true;
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -46,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
     connect(this->resultDialog, &DialogResultGrid::finished, this, &MainWindow::on_diablog_result_close);
     connect(this->resultDialog, &DialogResultGrid::pause_simulation, this, &MainWindow::on_pause_progress);
+    connect(this->simulation, &Simulation::message, this, &MainWindow::on_message);
 //    this->getItemRule();
 
     this->getInitialValue();
@@ -78,6 +96,7 @@ void MainWindow::on_rulesComboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_launchButton_clicked()
 {
+    if (!this->validateForm()) return;
     this->simulationThread.start();
     emit start_simulation();
 }
@@ -191,5 +210,14 @@ void MainWindow::on_rule_error(QString message)
     msgBox.exec();
 
 
+
+}
+
+void MainWindow::on_message(QString message)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Message");
+    msgBox.setText(message);
+    msgBox.exec();
 
 }

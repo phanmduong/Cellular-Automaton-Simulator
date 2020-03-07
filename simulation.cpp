@@ -115,8 +115,8 @@ void Simulation::readInitValueGrid(const string path)
     int number_of_state;
     std::ifstream ifs(path);
     if( !ifs.is_open() ) {
-        std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
-        exit(-1);
+        emit this->message("Unable to open "+QString::fromStdString(path)+". Exiting ...");
+        return;
     }
 
     ifs>>m_width>>m_height>>number_of_state;
@@ -125,17 +125,27 @@ void Simulation::readInitValueGrid(const string path)
     m_height = this->config->getHeight();
     //read matrix from the input file and set the value to the grid
     int stateName;
-    for (int j = 0; j < this->config->getHeight(); ++j){
-    for (int i = 0; i <this->config->getWidth(); ++i)
-        {
-            ifs >> stateName;
-            State *state = this->states[stateName];
-            if (this->grid->getCell(i,j) != nullptr){
-                this->grid->getCell(i,j)->setState(state);
-            }
 
+    for (int j = 0; j < this->config->getHeight(); ++j){
+        for (int i = 0; i <this->config->getWidth(); ++i)
+            {
+                ifs >> stateName;
+                if (stateName >= this->config->getNumberOfState() - 1) {
+                    this->isStop = true;
+                    emit this->message("Input file invalid");
+                    return;
+                }
+
+                State *state = this->states[stateName];
+
+                if (this->grid->getCell(i,j) != nullptr){
+                    this->grid->getCell(i,j)->setState(state);
+                }
+
+            }
         }
-    }
+
+
     ifs.close();
 }
 
@@ -144,15 +154,19 @@ void Simulation::writeValueGrid(const string path)
 {
     //TODO: write state of cell to file
     //open file
-    std::ofstream ofs(path);
-    //write to file
-    for (int j = 0; j < config->getHeight(); ++j) {
-        for (int i = 0; i <this->config->getWidth(); ++i) {   
-            ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
+    try {
+        std::ofstream ofs(path);
+        //write to file
+        for (int j = 0; j < config->getHeight(); ++j) {
+            for (int i = 0; i <this->config->getWidth(); ++i) {
+                ofs << this->grid->getCell(i,j)->getState()->getName() << " ";
+            }
+            ofs << std::endl;
         }
-        ofs << std::endl;
+    } catch (exception e) {
+        emit this->message(e.what());
+        return;
     }
-
 }
 
 void Simulation::clearRules()
@@ -183,14 +197,24 @@ void Simulation::getRulesFromFile(string path)
     this->handleLibRule = dlopen(path_arr, RTLD_LAZY);
     if (!this->handleLibRule) {
         fputs(dlerror(), stderr);
+        this->config->setFileRulePath("");
+        emit this->message("Rule file invalid");
+        return;
     }
     typedef void (*rule_t)();
     typedef vector<Rule*> (*rule_t2)();
 
-    rule_t initRules = (rule_t) dlsym(this->handleLibRule, "initRules");
-    initRules();
-    rule_t2 getAllRules = (rule_t2) dlsym(this->handleLibRule, "getAllRules");
-    this->rules = getAllRules();
+    try {
+        rule_t initRules = (rule_t) dlsym(this->handleLibRule, "initRules");
+        initRules();
+        rule_t2 getAllRules = (rule_t2) dlsym(this->handleLibRule, "getAllRules");
+        this->rules = getAllRules();
+    } catch (...) {
+        this->config->setFileRulePath("");
+        emit this->message("Rule file invalid");
+        return;
+    }
+
 //    dlclose(handle);
 }
 
@@ -213,6 +237,11 @@ void Simulation::run()
     this->grid = new Grid(this->config->getWidth(),this->config->getHeight(), neighborPositions, rule, this->states);
 
     this->readInitValueGrid(this->config->getFileInputValuePath());
+
+    if (this->isStop){
+        emit finished();
+        return;
+    }
 
     emit startGeneration();
 
