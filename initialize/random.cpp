@@ -34,7 +34,9 @@ int main(void) {
     srand(time(NULL));
 
     ofstream textfile;
-    textfile.open (filename, ofstream::out | ofstream::app);
+    textfile.open (filename, ofstream::out);
+
+    textfile << height << " " << width << " " << no_state << endl;
     
     for (unsigned i = 0; i < height; i++)
     {

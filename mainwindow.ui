@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>324</width>
-    <height>594</height>
+    <width>321</width>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>29</x>
-      <y>368</y>
+      <y>305</y>
       <width>81</width>
       <height>16</height>
      </rect>
@@ -34,7 +34,7 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>500</y>
+      <y>410</y>
       <width>112</width>
       <height>32</height>
      </rect>
@@ -43,89 +43,11 @@
      <string>Launch</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>29</x>
-      <y>208</y>
-      <width>58</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Height</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="heightEdit">
-    <property name="geometry">
-     <rect>
-      <x>139</x>
-      <y>208</y>
-      <width>161</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>100</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>29</x>
-      <y>238</y>
-      <width>58</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Width</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="widthEdit">
-    <property name="geometry">
-     <rect>
-      <x>139</x>
-      <y>238</y>
-      <width>161</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>100</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>29</x>
-      <y>268</y>
-      <width>111</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Number of states</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="numberOfStateEdit">
-    <property name="geometry">
-     <rect>
-      <x>139</x>
-      <y>268</y>
-      <width>161</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>4</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
       <x>29</x>
-      <y>298</y>
+      <y>235</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -138,7 +60,7 @@
     <property name="geometry">
      <rect>
       <x>139</x>
-      <y>298</y>
+      <y>235</y>
       <width>161</width>
       <height>21</height>
      </rect>
@@ -151,7 +73,7 @@
     <property name="geometry">
      <rect>
       <x>139</x>
-      <y>378</y>
+      <y>315</y>
       <width>161</width>
       <height>81</height>
      </rect>
@@ -175,7 +97,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>132</x>
-      <y>460</y>
+      <y>190</y>
       <width>171</width>
       <height>32</height>
      </rect>
@@ -311,7 +233,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>470</y>
+      <y>200</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -324,7 +246,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>335</y>
+      <y>272</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -337,7 +259,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>333</y>
+      <y>270</y>
       <width>161</width>
       <height>21</height>
      </rect>
@@ -352,7 +274,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>324</width>
+     <width>321</width>
      <height>22</height>
     </rect>
    </property>

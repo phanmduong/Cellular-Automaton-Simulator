@@ -1,4 +1,6 @@
 #include "configuration.h"
+#include <iostream>
+#include <fstream>
 
 //BanTQ code 29/2/2020
 //get state
@@ -110,6 +112,18 @@ int Configuration::getIntervalTime() const
 void Configuration::setIntervalTime(int value)
 {
     intervalTime = value;
+}
+
+void Configuration::getConfigFromFile(string path)
+{
+    std::ifstream ifs(path);
+    if( !ifs.is_open() ) {
+        std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
+    }
+
+    ifs>>width>>height>>numberOfState;
+
+    ifs.close();
 }
 
 Configuration::Configuration()

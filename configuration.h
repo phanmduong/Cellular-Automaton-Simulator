@@ -15,9 +15,9 @@ class Configuration
     int limitGeneration;
     int intervalTime;
 
-    string fileRulePath =  "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/rule/rule.so";
-    string fileInputValuePath = "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/initialize/input2.txt";
-    string directoryOutputValuePath = "/Volumes/DATA/Master Program/M1.07/Cellular-Automaton-Simulator/output";
+    string fileRulePath =  "";
+    string fileInputValuePath = "";
+    string directoryOutputValuePath = "";
 
 public:
     Configuration();
@@ -49,6 +49,8 @@ public:
     void setDirectoryOutputValuePath(const string &value);
     int getIntervalTime() const;
     void setIntervalTime(int value);
+
+    void getConfigFromFile(string path);
 };
 
 #endif // CONFIGURATION_H

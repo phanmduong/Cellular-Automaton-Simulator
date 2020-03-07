@@ -7,6 +7,7 @@
 #include <QThread>
 #include <dialogresultgrid.h>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -22,18 +23,13 @@ class MainWindow : public QMainWindow
 
     void getItemRule();
     void getInitialValue();
+    bool validateForm();
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
-    void on_heightEdit_textChanged(const QString &arg1);
-
-    void on_widthEdit_textChanged(const QString &arg1);
-
-    void on_numberOfStateEdit_textChanged(const QString &arg1);
-
     void on_limitGenerationEdit_textChanged(const QString &arg1);
 
     void on_neighborsEdit_textChanged();
@@ -63,6 +59,8 @@ private slots:
     void on_pause_progress();
 
     void on_rule_error(QString message);
+
+    void on_message(QString message);
 
 signals:
     void start_simulation();
