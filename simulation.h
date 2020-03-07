@@ -55,6 +55,7 @@ signals:
     void progressChanged(float value);
     void startGeneration();
     void finished();
+    void message(QString message);
 
 
     // QThread interface

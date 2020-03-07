@@ -35,14 +35,15 @@ void DialogResultGrid::paintEvent(QPaintEvent *event)
     for (int j = 0;j<this->grid->getHeight();++j){
         for (int i = 0; i<this->grid->getWidth();++i){
             int topX = j*sizeOfCell;
-                        int topY = i*sizeOfCell;
-                        QColor color(QString::fromStdString(this->grid->getCell(i,j)->getState()->getColor()));
-                        painter.setBrush(QBrush(color));
+            int topY = i*sizeOfCell;
+                if (this->grid->getCell(i,j)->getState() != nullptr){
+                QColor color(QString::fromStdString(this->grid->getCell(i,j)->getState()->getColor()));
+                painter.setBrush(QBrush(color));
 
-                        painter.drawRect(topX, topY, sizeOfCell, sizeOfCell);
+                painter.drawRect(topX, topY, sizeOfCell, sizeOfCell);
+                }
         }
     }
-
 }
 
 void DialogResultGrid::repaint()
@@ -95,5 +96,5 @@ void DialogResultGrid::on_pauseButton_clicked()
         this->ui->pauseButton->setText("Resume");
         this->isPause = true;
     }
-    this->pause_simulation();
+    emit this->pause_simulation();
 }

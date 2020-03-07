@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
 
 
 void MainWindow::getItemRule()
@@ -19,13 +20,27 @@ void MainWindow::getItemRule()
 
 void MainWindow::getInitialValue()
 {
-    this->config->setHeight(this->ui->heightEdit->text().toInt());
-    this->config->setWidth(this->ui->widthEdit->text().toInt());
-    this->config->setNumberOfState(this->ui->numberOfStateEdit->text().toInt());
     this->config->setLimitGeneration(this->ui->limitGenerationEdit->text().toInt());
     this->config->setIntervalTime(this->ui->intervalTimeEdit->text().toInt());
     this->config->setNeighborPostionText(this->ui->neighborsEdit->toPlainText().toStdString());
     this->config->setRuleName(this->ui->rulesComboBox->currentText().toStdString());
+}
+
+bool MainWindow::validateForm()
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Error");
+
+    if (this->config->getWidth() <= 0){
+
+        msgBox.setText("Width invalid");
+        msgBox.exec();
+        return false;
+    }
+
+    //TODO: ....
+
+    return true;
 }
 
 
@@ -48,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
     connect(this->resultDialog, &DialogResultGrid::finished, this, &MainWindow::on_diablog_result_close);
     connect(this->resultDialog, &DialogResultGrid::pause_simulation, this, &MainWindow::on_pause_progress);
-
 //    this->getItemRule();
 
     this->getInitialValue();
@@ -62,21 +76,6 @@ MainWindow::~MainWindow()
     delete config;
     delete ui;
     delete resultDialog;
-}
-
-void MainWindow::on_heightEdit_textChanged(const QString &arg1)
-{
-    this->config->setHeight(arg1.toInt());
-}
-
-void MainWindow::on_widthEdit_textChanged(const QString &arg1)
-{
-     this->config->setWidth(arg1.toInt());
-}
-
-void MainWindow::on_numberOfStateEdit_textChanged(const QString &arg1)
-{
-    this->config->setNumberOfState(arg1.toInt());
 }
 
 void MainWindow::on_limitGenerationEdit_textChanged(const QString &arg1)
@@ -96,6 +95,7 @@ void MainWindow::on_rulesComboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_launchButton_clicked()
 {
+    if (!this->validateForm()) return;
     this->simulationThread.start();
     emit start_simulation();
 }
@@ -107,6 +107,7 @@ void MainWindow::on_chooseFileRule_clicked()
     this->ui->ruleFilePathEdit->setText(file_name);
 
     this->config->setFileRulePath(file_name.toStdString());
+    if (file_name == "") return;
     this->getItemRule();
 }
 
@@ -117,6 +118,10 @@ void MainWindow::on_chooseFileInput_clicked()
     this->ui->inputFilePathEdit->setText(file_name);
 
     this->config->setFileInputValuePath(file_name.toStdString());
+
+    if (file_name == "") return;
+
+    this->config->getConfigFromFile(file_name.toStdString());
 }
 
 void MainWindow::on_chooseDirOutput_clicked()
@@ -138,20 +143,23 @@ void MainWindow::on_started_simulation()
 {
     qDebug() << "start";
     this->disabledUI(true);
-    this->hide();
+//    this->hide();
 }
 
 void MainWindow::on_finished_simulation()
 {
     qDebug() << "end";
     this->disabledUI(false);
+    disconnect(this->simulation->getGrid(), &Grid::rule_error, this, &MainWindow::on_rule_error);
     this->simulationThread.quit();
+    this->simulationThread.wait();
     this->resultDialog->hideProgress();
 }
 
 void MainWindow::on_started_generation()
 {
     qDebug() << "generation";
+    connect(this->simulation->getGrid(), &Grid::rule_error, this, &MainWindow::on_rule_error);
     this->resultDialog->setGrid(this->simulation->getGrid());
     this->resultDialog->show();
     this->resultDialog->showProgress();
@@ -162,10 +170,7 @@ void MainWindow::disabledUI(bool value){
     this->ui->chooseFileInput->setDisabled(value);
     this->ui->chooseDirOutput->setDisabled(value);
     this->ui->chooseFileRule->setDisabled(value);
-    this->ui->heightEdit->setDisabled(value);
-    this->ui->widthEdit->setDisabled(value);
     this->ui->limitGenerationEdit->setDisabled(value);
-    this->ui->numberOfStateEdit->setDisabled(value);
     this->ui->neighborsEdit->setDisabled(value);
     this->ui->rulesComboBox->setDisabled(value);
     this->ui->intervalTimeEdit->setDisabled(value);
@@ -178,10 +183,9 @@ void MainWindow::on_intervalTimeEdit_textChanged(const QString &arg1)
 
 void MainWindow::on_diablog_result_close()
 {
-    this->show();
     this->simulation->quit();
-    this->simulationThread.quit();
-    this->simulationThread.wait();
+    this->resultDialog->hide();
+    this->show();
 }
 
 void MainWindow::on_pause_progress()
@@ -191,5 +195,28 @@ void MainWindow::on_pause_progress()
     } else {
         this->simulation->setIsPause(true);
     }
+
+}
+
+void MainWindow::on_rule_error(QString message)
+{
+    qDebug() << "error";
+    this->on_diablog_result_close();
+
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Error");
+    msgBox.setText("Rule Error: "+ message);
+    msgBox.exec();
+
+
+
+}
+
+void MainWindow::on_message(QString message)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Message");
+    msgBox.setText(message);
+    msgBox.exec();
 
 }
