@@ -310,12 +310,12 @@ class Bloomerang: public Rule {
                 ++count;
             }
         }
-
+    }
     public:
     Bloomerang(): Rule((string) "Bloomerang") {}
     ~Bloomerang() {}
 
-    State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
+    virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
         const unsigned int RULE_GENS = states.size();
         const State *state = cell->getState();
         int currentState = stoi(state->getName());
