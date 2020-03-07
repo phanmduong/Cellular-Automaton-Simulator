@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
 
 
 void MainWindow::getItemRule()
@@ -48,8 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
     connect(this->resultDialog, &DialogResultGrid::finished, this, &MainWindow::on_diablog_result_close);
     connect(this->resultDialog, &DialogResultGrid::pause_simulation, this, &MainWindow::on_pause_progress);
-
-    this->getItemRule();
+//    this->getItemRule();
 
     this->getInitialValue();
 }
@@ -138,20 +138,23 @@ void MainWindow::on_started_simulation()
 {
     qDebug() << "start";
     this->disabledUI(true);
-    this->hide();
+//    this->hide();
 }
 
 void MainWindow::on_finished_simulation()
 {
     qDebug() << "end";
     this->disabledUI(false);
+    disconnect(this->simulation->getGrid(), &Grid::rule_error, this, &MainWindow::on_rule_error);
     this->simulationThread.quit();
+    this->simulationThread.wait();
     this->resultDialog->hideProgress();
 }
 
 void MainWindow::on_started_generation()
 {
     qDebug() << "generation";
+    connect(this->simulation->getGrid(), &Grid::rule_error, this, &MainWindow::on_rule_error);
     this->resultDialog->setGrid(this->simulation->getGrid());
     this->resultDialog->show();
     this->resultDialog->showProgress();
@@ -178,10 +181,9 @@ void MainWindow::on_intervalTimeEdit_textChanged(const QString &arg1)
 
 void MainWindow::on_diablog_result_close()
 {
-    this->show();
     this->simulation->quit();
-    this->simulationThread.quit();
-    this->simulationThread.wait();
+    this->resultDialog->hide();
+    this->show();
 }
 
 void MainWindow::on_pause_progress()
@@ -191,5 +193,19 @@ void MainWindow::on_pause_progress()
     } else {
         this->simulation->setIsPause(true);
     }
+
+}
+
+void MainWindow::on_rule_error(QString message)
+{
+    qDebug() << "error";
+    this->on_diablog_result_close();
+
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Error");
+    msgBox.setText("Rule Error: "+ message);
+    msgBox.exec();
+
+
 
 }

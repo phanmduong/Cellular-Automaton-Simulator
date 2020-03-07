@@ -191,7 +191,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>Choose file</string>
+     <string>Browse</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="inputFilePathEdit">
@@ -262,7 +262,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>Choose file</string>
+     <string>Browse</string>
     </property>
    </widget>
    <widget class="QPushButton" name="chooseFileRule">
@@ -275,7 +275,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>Choose file</string>
+     <string>Browse</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="ruleFilePathEdit">

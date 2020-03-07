@@ -62,6 +62,8 @@ private slots:
 
     void on_pause_progress();
 
+    void on_rule_error(QString message);
+
 signals:
     void start_simulation();
 
