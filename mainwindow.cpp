@@ -31,9 +31,65 @@ bool MainWindow::validateForm()
     QMessageBox msgBox;
     msgBox.setWindowTitle("Error");
 
+    if (this->config->getFileInputValuePath()==""){
+
+        msgBox.setText("Input file must not be empty!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getHeight() <= 0){
+
+        msgBox.setText("Height parameter (input file) must be positive integer!");
+        msgBox.exec();
+        return false;
+    }
+
     if (this->config->getWidth() <= 0){
 
-        msgBox.setText("Width invalid");
+        msgBox.setText("Width parameter (input file) must be positive integer!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getDirectoryOutputValuePath()==""){
+
+        msgBox.setText("Output directory must not be empty!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getFileRulePath()==""){
+
+        msgBox.setText("Rule library file must not be empty!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getRuleName()==""){
+
+        msgBox.setText("Rule must not be empty!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getLimitGeneration() <= 0){
+
+        msgBox.setText("Limit generation must be positive integer!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getIntervalTime() <= 0){
+
+        msgBox.setText("Interval time (ms) must be positive integer!");
+        msgBox.exec();
+        return false;
+    }
+
+    if (this->config->getNeighborPostionText()==""){
+
+        msgBox.setText("Neighbors must not be empty!");
         msgBox.exec();
         return false;
     }
@@ -63,7 +119,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->simulation, &Simulation::finished, this, &MainWindow::on_finished_simulation);
     connect(this->resultDialog, &DialogResultGrid::finished, this, &MainWindow::on_diablog_result_close);
     connect(this->resultDialog, &DialogResultGrid::pause_simulation, this, &MainWindow::on_pause_progress);
-    connect(this->simulation, &Simulation::message, this, &MainWindow::on_message);
 //    this->getItemRule();
 
     this->getInitialValue();
