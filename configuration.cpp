@@ -121,7 +121,7 @@ void Configuration::getConfigFromFile(string path)
         std::cerr<<"Unable to open "<<path<<". Exiting ..."<<std::endl;
     }
 
-    ifs>>width>>height>>numberOfState;
+    ifs>>height>>width>>numberOfState;
 
     ifs.close();
 }
