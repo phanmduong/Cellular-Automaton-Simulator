@@ -119,7 +119,7 @@ void Simulation::readInitValueGrid(const string path)
         return;
     }
 
-    ifs>>m_width>>m_height>>number_of_state;
+    ifs>>m_height>>m_width>>number_of_state;
 
     m_width = this->config->getWidth();
     m_height = this->config->getHeight();
@@ -130,7 +130,7 @@ void Simulation::readInitValueGrid(const string path)
         for (int i = 0; i <this->config->getWidth(); ++i)
             {
                 ifs >> stateName;
-                if (stateName >= this->config->getNumberOfState() - 1) {
+                if (stateName > this->config->getNumberOfState() - 1) {
                     this->isStop = true;
                     emit this->message("Input file invalid");
                     return;
