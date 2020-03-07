@@ -10,6 +10,19 @@ void registerRule(Rule *rule){
     rules.push_back(rule);
 }
 
+// TEMPLATE
+class Rule_name: public Rule {
+    // some functions and variables
+
+    public:
+        Rule_name(): Rule((string) "Your rule name") {}
+        ~Rule_name() {}
+        virtual State* excuteRule(const Cell *cell, vector<Cell*> neighbors, vector<State *> states) {
+            // your implementation code of your rule
+            // let enjoy and good luck
+        }
+};
+
 class ConwaysGameOfLife: public Rule
 {
      int RULE_SURVIVE[3]={2,3};
@@ -467,6 +480,8 @@ extern "C" void initRules(){
     registerRule(new StarWars());//BanTQ
     registerRule(new ProbabilisticStarWar());//BanTQ
     registerRule(new SediMental());//BanTQ
+
+    // REGISTER YOUR NEW RULE HERE
 }
 
 extern "C" vector<Rule*> getAllRules(){
